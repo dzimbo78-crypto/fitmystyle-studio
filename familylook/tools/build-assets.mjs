@@ -1,0 +1,3 @@
+import fs from 'node:fs';import path from 'node:path';import {MODELS,personDefaults,PALETTES,MEASURES} from '../site/lib/measurements.mjs';import {garmentSvg} from '../site/lib/graphics.mjs';
+const root=new URL('../site/',import.meta.url),dest=new URL('../site/assets/templates/',import.meta.url);fs.mkdirSync(dest,{recursive:true});for(const m of MODELS){const p=personDefaults(2,m.groups[0]);p.model=m.id;p.color=PALETTES.sage.colors[(MODELS.indexOf(m)%4)];const svg=garmentSvg(p,{width:600,height:720});fs.writeFileSync(new URL(m.id+'.svg',dest),svg)}
+fs.writeFileSync(new URL('../site/data/catalog.json',import.meta.url),JSON.stringify({version:1,models:MODELS,palettes:PALETTES,measurements:MEASURES},null,2));console.log('Generated',MODELS.length,'template SVG assets');

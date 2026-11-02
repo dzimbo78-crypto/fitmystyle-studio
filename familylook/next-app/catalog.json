@@ -1,0 +1,736 @@
+{
+  "version": 1,
+  "models": [
+    {
+      "id": "tee",
+      "name": "T-shirt regular",
+      "type": "top",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "required": [
+        "height",
+        "chest",
+        "waist",
+        "hip",
+        "shoulder",
+        "arm",
+        "torso"
+      ],
+      "ease": {
+        "chest": 9,
+        "waist": 10,
+        "hip": 8
+      },
+      "material": "Jersey 180–220 g/m²",
+      "complexity": "podstawowy"
+    },
+    {
+      "id": "oversize-tee",
+      "name": "T-shirt oversize",
+      "type": "top",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "required": [
+        "height",
+        "chest",
+        "waist",
+        "hip",
+        "shoulder",
+        "arm",
+        "torso"
+      ],
+      "ease": {
+        "chest": 20,
+        "waist": 21,
+        "hip": 18
+      },
+      "material": "Jersey 220–260 g/m²",
+      "complexity": "podstawowy"
+    },
+    {
+      "id": "organic-tee",
+      "name": "T-shirt organic",
+      "type": "top",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "required": [
+        "height",
+        "chest",
+        "waist",
+        "hip",
+        "shoulder",
+        "arm",
+        "torso"
+      ],
+      "ease": {
+        "chest": 12,
+        "waist": 13,
+        "hip": 10
+      },
+      "material": "Jersey certyfikowany",
+      "complexity": "podstawowy"
+    },
+    {
+      "id": "crewneck",
+      "name": "Bluza bez kaptura",
+      "type": "top",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "required": [
+        "height",
+        "chest",
+        "waist",
+        "hip",
+        "shoulder",
+        "arm",
+        "torso",
+        "bicep",
+        "wrist"
+      ],
+      "ease": {
+        "chest": 17,
+        "waist": 18,
+        "hip": 15,
+        "bicep": 7
+      },
+      "material": "French terry 280–340 g/m²",
+      "complexity": "średni"
+    },
+    {
+      "id": "oversize-crew",
+      "name": "Bluza oversize",
+      "type": "top",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "required": [
+        "height",
+        "chest",
+        "waist",
+        "hip",
+        "shoulder",
+        "arm",
+        "torso",
+        "bicep",
+        "wrist"
+      ],
+      "ease": {
+        "chest": 25,
+        "waist": 26,
+        "hip": 24,
+        "bicep": 10
+      },
+      "material": "Dresówka 320–400 g/m²",
+      "complexity": "średni"
+    },
+    {
+      "id": "hoodie",
+      "name": "Hoodie",
+      "type": "top",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "required": [
+        "height",
+        "chest",
+        "waist",
+        "hip",
+        "shoulder",
+        "arm",
+        "torso",
+        "neck",
+        "bicep",
+        "wrist"
+      ],
+      "ease": {
+        "chest": 20,
+        "waist": 21,
+        "hip": 19,
+        "bicep": 9
+      },
+      "material": "Fleece 300–380 g/m²",
+      "complexity": "średni"
+    },
+    {
+      "id": "zip-hoodie",
+      "name": "Bluza rozpinana",
+      "type": "top",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "required": [
+        "height",
+        "chest",
+        "waist",
+        "hip",
+        "shoulder",
+        "arm",
+        "torso",
+        "neck",
+        "bicep",
+        "wrist"
+      ],
+      "ease": {
+        "chest": 20,
+        "waist": 20,
+        "hip": 18,
+        "bicep": 8
+      },
+      "material": "French terry 300 g/m²",
+      "complexity": "zaawansowany"
+    },
+    {
+      "id": "polo",
+      "name": "Polo",
+      "type": "top",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "required": [
+        "height",
+        "chest",
+        "waist",
+        "hip",
+        "shoulder",
+        "arm",
+        "torso",
+        "neck"
+      ],
+      "ease": {
+        "chest": 10,
+        "waist": 10,
+        "hip": 9
+      },
+      "material": "Piqué 180–240 g/m²",
+      "complexity": "średni"
+    },
+    {
+      "id": "shirt",
+      "name": "Koszula klasyczna",
+      "type": "top",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "required": [
+        "height",
+        "chest",
+        "waist",
+        "hip",
+        "shoulder",
+        "arm",
+        "torso",
+        "neck",
+        "bicep",
+        "wrist"
+      ],
+      "ease": {
+        "chest": 13,
+        "waist": 13,
+        "hip": 12,
+        "bicep": 6
+      },
+      "material": "Popelina 120–160 g/m²",
+      "complexity": "zaawansowany"
+    },
+    {
+      "id": "linen-shirt",
+      "name": "Koszula lniana",
+      "type": "top",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "required": [
+        "height",
+        "chest",
+        "waist",
+        "hip",
+        "shoulder",
+        "arm",
+        "torso",
+        "neck",
+        "bicep",
+        "wrist"
+      ],
+      "ease": {
+        "chest": 17,
+        "waist": 18,
+        "hip": 15,
+        "bicep": 7
+      },
+      "material": "Len 150–200 g/m²",
+      "complexity": "zaawansowany"
+    },
+    {
+      "id": "sweater",
+      "name": "Sweter basic",
+      "type": "top",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "required": [
+        "height",
+        "chest",
+        "waist",
+        "hip",
+        "shoulder",
+        "arm",
+        "torso",
+        "bicep",
+        "wrist"
+      ],
+      "ease": {
+        "chest": 14,
+        "waist": 14,
+        "hip": 12,
+        "bicep": 6
+      },
+      "material": "Dzianina swetrowa",
+      "complexity": "średni"
+    },
+    {
+      "id": "halfzip",
+      "name": "Sweter half-zip",
+      "type": "top",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "required": [
+        "height",
+        "chest",
+        "waist",
+        "hip",
+        "shoulder",
+        "arm",
+        "torso",
+        "neck",
+        "bicep",
+        "wrist"
+      ],
+      "ease": {
+        "chest": 15,
+        "waist": 15,
+        "hip": 13,
+        "bicep": 7
+      },
+      "material": "Dzianina merino / bawełna",
+      "complexity": "zaawansowany"
+    },
+    {
+      "id": "turtleneck",
+      "name": "Golf",
+      "type": "top",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "required": [
+        "height",
+        "chest",
+        "waist",
+        "hip",
+        "shoulder",
+        "arm",
+        "torso",
+        "neck",
+        "bicep",
+        "wrist"
+      ],
+      "ease": {
+        "chest": 7,
+        "waist": 8,
+        "hip": 8,
+        "bicep": 4
+      },
+      "material": "Dzianina elastyczna",
+      "complexity": "średni"
+    },
+    {
+      "id": "cardigan",
+      "name": "Kardigan",
+      "type": "top",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "required": [
+        "height",
+        "chest",
+        "waist",
+        "hip",
+        "shoulder",
+        "arm",
+        "torso",
+        "neck",
+        "bicep",
+        "wrist"
+      ],
+      "ease": {
+        "chest": 16,
+        "waist": 16,
+        "hip": 15,
+        "bicep": 7
+      },
+      "material": "Dzianina swetrowa",
+      "complexity": "zaawansowany"
+    },
+    {
+      "id": "joggers",
+      "name": "Spodnie jogger",
+      "type": "bottom",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "required": [
+        "height",
+        "waist",
+        "hip",
+        "inseam",
+        "outseam"
+      ],
+      "ease": {
+        "waist": 2,
+        "hip": 13
+      },
+      "material": "French terry 280–340 g/m²",
+      "complexity": "średni"
+    },
+    {
+      "id": "straightpants",
+      "name": "Spodnie proste",
+      "type": "bottom",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "required": [
+        "height",
+        "waist",
+        "hip",
+        "inseam",
+        "outseam"
+      ],
+      "ease": {
+        "waist": 3,
+        "hip": 8
+      },
+      "material": "Bawełna twill",
+      "complexity": "zaawansowany"
+    },
+    {
+      "id": "dress",
+      "name": "Sukienka casual",
+      "type": "top",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "required": [
+        "height",
+        "chest",
+        "waist",
+        "hip",
+        "shoulder",
+        "arm",
+        "torso"
+      ],
+      "ease": {
+        "chest": 12,
+        "waist": 17,
+        "hip": 14
+      },
+      "material": "Jersey / popelina",
+      "complexity": "zaawansowany"
+    },
+    {
+      "id": "baby-body",
+      "name": "Body niemowlęce",
+      "type": "baby",
+      "groups": [
+        "infant"
+      ],
+      "required": [
+        "height",
+        "chest",
+        "waist",
+        "hip",
+        "shoulder",
+        "arm",
+        "torso"
+      ],
+      "ease": {
+        "chest": 7,
+        "waist": 7,
+        "hip": 8
+      },
+      "material": "Jersey bawełniany",
+      "complexity": "średni"
+    },
+    {
+      "id": "baby-romper",
+      "name": "Rampers niemowlęcy",
+      "type": "baby",
+      "groups": [
+        "infant"
+      ],
+      "required": [
+        "height",
+        "chest",
+        "waist",
+        "hip",
+        "shoulder",
+        "arm",
+        "torso",
+        "inseam"
+      ],
+      "ease": {
+        "chest": 9,
+        "waist": 11,
+        "hip": 13
+      },
+      "material": "Jersey / interlock",
+      "complexity": "zaawansowany"
+    },
+    {
+      "id": "baby-sweat",
+      "name": "Bluza baby bez sznurków",
+      "type": "top",
+      "groups": [
+        "infant"
+      ],
+      "required": [
+        "height",
+        "chest",
+        "waist",
+        "hip",
+        "shoulder",
+        "arm",
+        "torso"
+      ],
+      "ease": {
+        "chest": 10,
+        "waist": 11,
+        "hip": 10
+      },
+      "material": "Miękki French terry",
+      "complexity": "średni"
+    }
+  ],
+  "palettes": {
+    "sage": {
+      "name": "Szałwia i krem",
+      "colors": [
+        "#91A18B",
+        "#E9E2D3",
+        "#544B43",
+        "#B4C1A5"
+      ]
+    },
+    "espresso": {
+      "name": "Espresso & latte",
+      "colors": [
+        "#564035",
+        "#BE9572",
+        "#E8DDCF",
+        "#806B61"
+      ]
+    },
+    "coastal": {
+      "name": "Coastal",
+      "colors": [
+        "#657E90",
+        "#E7E4DA",
+        "#B2C9C8",
+        "#253C50"
+      ]
+    },
+    "rose": {
+      "name": "Dusty Rose",
+      "colors": [
+        "#B28B90",
+        "#EFDDD6",
+        "#766066",
+        "#C3AA9D"
+      ]
+    },
+    "navy": {
+      "name": "Navy classics",
+      "colors": [
+        "#24334A",
+        "#E8E7E2",
+        "#C3BBAE",
+        "#7B91A8"
+      ]
+    },
+    "olive": {
+      "name": "Olive winter",
+      "colors": [
+        "#515D48",
+        "#D4C4AB",
+        "#9DA38E",
+        "#49413B"
+      ]
+    }
+  },
+  "measurements": [
+    {
+      "id": "height",
+      "name": "Wzrost",
+      "instruction": "Stań boso, plecami do ściany. Od podłogi do czubka głowy, z głową poziomo.",
+      "location": "Pion od podłogi do czubka głowy",
+      "all": true,
+      "range": [
+        40,
+        230
+      ]
+    },
+    {
+      "id": "chest",
+      "name": "Obwód klatki / biustu",
+      "instruction": "Poprowadź miarkę poziomo pod pachami przez najszersze miejsce klatki/piersi. Oddychaj spokojnie; bez ściskania.",
+      "location": "Poziomo przez najszerszą część klatki",
+      "all": true,
+      "range": [
+        32,
+        190
+      ]
+    },
+    {
+      "id": "waist",
+      "name": "Obwód talii",
+      "instruction": "Wokół naturalnej talii - zwykle najwęższa część tułowia. Nie wciągaj brzucha, nie zaciskaj miarki.",
+      "location": "Naturalna talia",
+      "all": true,
+      "range": [
+        30,
+        200
+      ]
+    },
+    {
+      "id": "hip",
+      "name": "Obwód bioder",
+      "instruction": "Złącz stopy, mierz poziomo przez najszersze miejsce pośladków.",
+      "location": "Poziomo przez najszersze biodra",
+      "all": true,
+      "range": [
+        32,
+        210
+      ]
+    },
+    {
+      "id": "neck",
+      "name": "Obwód szyi",
+      "instruction": "Wokół nasady szyi. Zostaw miejsce na jeden palec; do kołnierzyka stosuj dodatkowy luz konstrukcyjny.",
+      "location": "Nasada szyi",
+      "all": true,
+      "range": [
+        18,
+        65
+      ]
+    },
+    {
+      "id": "shoulder",
+      "name": "Szerokość barków",
+      "instruction": "Z tyłu: od punktu barkowego przy jednym ramieniu do drugiego, przez linię pleców.",
+      "location": "Punkt barkowy–punkt barkowy",
+      "all": true,
+      "range": [
+        15,
+        65
+      ]
+    },
+    {
+      "id": "arm",
+      "name": "Długość rękawa / ramienia",
+      "instruction": "Od punktu barkowego przez lekko zgięty łokieć do kostki nadgarstka.",
+      "location": "Bark–łokieć–nadgarstek",
+      "all": true,
+      "range": [
+        14,
+        85
+      ]
+    },
+    {
+      "id": "torso",
+      "name": "Długość tułowia",
+      "instruction": "Z tyłu od wystającego kręgu u nasady szyi (C7) do planowanej linii dołu odzieży.",
+      "location": "C7–planowany dół ubrania",
+      "all": true,
+      "range": [
+        15,
+        105
+      ]
+    },
+    {
+      "id": "bicep",
+      "name": "Obwód ramienia",
+      "instruction": "Mierz najszerszy obwód górnej części ramienia przy swobodnie opuszczonej ręce.",
+      "location": "Najszersza część ramienia",
+      "all": true,
+      "range": [
+        11,
+        75
+      ]
+    },
+    {
+      "id": "wrist",
+      "name": "Obwód nadgarstka",
+      "instruction": "Obwód tuż powyżej kości nadgarstka. Nie zaciskaj miarki.",
+      "location": "Nadgarstek",
+      "all": true,
+      "range": [
+        8,
+        35
+      ]
+    },
+    {
+      "id": "inseam",
+      "name": "Długość nogawki od kroku",
+      "instruction": "Od punktu kroku, po wewnętrznej stronie nogi, do wybranej linii zakończenia nogawki. Z pomocą drugiej osoby.",
+      "location": "Krok–kostka po wewnętrznej stronie",
+      "all": true,
+      "range": [
+        12,
+        105
+      ]
+    },
+    {
+      "id": "outseam",
+      "name": "Długość nogawki od talii",
+      "instruction": "Od naturalnej talii, wzdłuż zewnętrznej strony nogi, do wybranej linii dołu.",
+      "location": "Talia–dół nogawki",
+      "all": true,
+      "range": [
+        20,
+        130
+      ]
+    },
+    {
+      "id": "head",
+      "name": "Obwód głowy (opcjonalnie)",
+      "instruction": "Nad brwiami i uszami - największy obwód głowy. Dotyczy kaptura i nakryć głowy.",
+      "location": "Głowa, nad brwiami",
+      "all": true,
+      "range": [
+        30,
+        75
+      ]
+    }
+  ]
+}
