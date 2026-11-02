@@ -35,7 +35,7 @@ Projekt jest zupełnie niezależny od wszystkich innych aplikacji. Brak wspólne
 
 ## Repozytorium do docelowego wdrożenia
 
-**Wyłącznie nowe repozytorium:** `dzimbo78-crypto/fitmystyle-studio` (należy je utworzyć jako nowe). Właścicielem ma być `dzimbo78-crypto`, nie `pbw78`. Nie używamy żadnych istniejących repozytoriów, usług ani sekretów. Nie inicjuj `git remote` do innego repozytorium.
+**Wyłącznie nowe repozytorium:** `dzimbo78-crypto/fitmystyle-studio` (utworzone i podłączone do nowej usługi Render). Właścicielem ma być `dzimbo78-crypto`, nie `pbw78`. Nie używamy żadnych istniejących repozytoriów, usług ani sekretów. Nie inicjuj `git remote` do innego repozytorium.
 
 ### Darmowy hosting
 
@@ -54,3 +54,4 @@ Uruchom `node --test tests/*.test.mjs && node scripts/build.mjs`. Na Render stw�
 - Wersja gościa zawiera eksport kopii danych oraz ręczne czyszczenie danych FitMyStyle w obrębie jednej domeny; inne aplikacje i klucze nie są dotykane.
 - Manekin udostępnia kartę techniczną do wydruku z widokiem przód/tył i zestawieniem ustawień. Nie jest to gotowa dokumentacja produkcyjna.
 - Publiczna aplikacja na Render jest samodzielnym plikiem HTML, zapewniającym dostęp do modułów bez zapisu serwerowego.
+Publikacja: https://fitmystyle-studio-independent.onrender.com

@@ -1,0 +1,21 @@
+name: FitMyStyle quality checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run unit tests
+        run: node --test source/tests/*.test.mjs
+      - name: Build modular static package
+        run: node source/scripts/build.mjs
+      - name: Verify publish output
+        run: test -s source/dist/index.html
