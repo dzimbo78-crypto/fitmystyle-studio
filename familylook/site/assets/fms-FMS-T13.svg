@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 430" role="img" aria-label="Wizualizacja koncepcyjna Relaxed Cardigan">
+ <defs>
+ <linearGradient id="fxoot7v-cloth" x1="0" y1="0" x2="1" y2=".27"><stop offset="0" stop-color="#626b5b"/><stop offset=".17" stop-color="#8c9a82"/><stop offset=".54" stop-color="#84917b"/><stop offset=".85" stop-color="#7c8874"/><stop offset="1" stop-color="#586152"/></linearGradient>
+ <linearGradient id="fxoot7v-skin" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#a28368"/><stop offset=".5" stop-color="#d8ae8b"/><stop offset="1" stop-color="#b18f72"/></linearGradient>
+ <linearGradient id="fxoot7v-pants" x1="0" y1="0" x2=".8" y2=".15"><stop stop-color="#aea697"/><stop offset=".5" stop-color="#d0c9bd"/><stop offset="1" stop-color="#a59e93"/></linearGradient>
+ <filter id="fxoot7v-drop" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="8"/></filter>
+ <clipPath id="fxoot7v-garmentclip"><path d="M114.5 108Q132 118 150 118Q168 118 185.5 108Q212.5 119 239.5 132L234.5 270Q216.5 277 204.5 270L200.5 173L219.5 320Q150 325 80.5 320L99.5 173L95.5 270Q83.5 277 65.5 270L60.5 132Q87.5 119 114.5 108Z"/></clipPath>
+ <pattern id="fxoot7v-grain" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 4L3 1" stroke="#fff" stroke-opacity=".055" stroke-width=".7"/></pattern>
+ <pattern id="fxoot7v-rib" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M2 0V10M6 0V10" stroke="#454b40" stroke-opacity=".24" stroke-width="1.3"/></pattern>
+ <pattern id="fxoot7v-cable" width="20" height="34" patternUnits="userSpaceOnUse"><path d="M6 -3C22 4 -6 13 9 21S22 31 7 37" fill="none" stroke="#535b4d" stroke-opacity=".26" stroke-width="3.1"/></pattern>
+ <pattern id="fxoot7v-stripes" width="15" height="15" patternUnits="userSpaceOnUse"><path d="M3 0V15" stroke="#454b40" stroke-opacity=".3" stroke-width="1.3"/></pattern>
+ <pattern id="fxoot7v-check" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M0 1H32M1 0V32" stroke="#3f463b" stroke-opacity=".27" stroke-width="1.6"/></pattern>
+ <pattern id="fxoot7v-herringbone" width="18" height="18" patternUnits="userSpaceOnUse"><path d="M0 1l9 8 9-8M0 10l9 8 9-8" fill="none" stroke="#3f463b" stroke-opacity=".2" stroke-width="1.7"/></pattern>
+ <pattern id="fxoot7v-argyle" width="44" height="44" patternUnits="userSpaceOnUse"><path d="M22 0L44 22 22 44 0 22Z" fill="#636d5c" fill-opacity=".14" stroke="#495044" stroke-opacity=".26" stroke-width="1.1"/></pattern>
+ <pattern id="fxoot7v-botanical" width="42" height="42" patternUnits="userSpaceOnUse"><path d="M21 42Q20 16 25 3M22 25Q3 9 8 12Q19 11 22 25M23 21Q40 6 37 19Q31 29 23 21" fill="none" stroke="#495044" stroke-opacity=".34" stroke-width="1.4"/></pattern>
+ <pattern id="fxoot7v-wave" width="42" height="15" patternUnits="userSpaceOnUse"><path d="M0 8Q10 0 21 8T42 8" fill="none" stroke="#42493e" stroke-opacity=".28" stroke-width="2"/></pattern>
+ <pattern id="fxoot7v-dot" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="1.4" fill="#3f463b" fill-opacity=".37"/></pattern></defs><g transform="translate(150 210) scale(1) translate(-150 -210) translate(0 0)">
+ <g opacity=".95">
+ <ellipse cx="150" cy="388" rx="65" ry="9" fill="#151615" opacity=".10" filter="url(#fxoot7v-drop"/>
+ <path d="M125 45Q124 18 150 19Q176 18 175 45L178 71Q174 90 150 90Q126 90 121 71Z" fill="url(#fxoot7v-skin)"/>
+ <path d="M139 79L137 112Q152 125 165 112L162 79" fill="url(#fxoot7v-skin)"/>
+ <path d="M102 111Q76 113 72 167L57 239Q56 259 69 258Q80 260 84 242L119 159M198 111Q224 113 228 167L243 239Q244 259 231 258Q220 260 216 242L181 159" fill="url(#fxoot7v-skin)"/>
+ <path d="M124 271L113 370Q117 386 128 384L152 295 171 384Q184 385 187 371L176 271Z" fill="url(#fxoot7v-pants)"/>
+ </g><g><path d="M114.5 108Q132 118 150 118Q168 118 185.5 108Q212.5 119 239.5 132L234.5 270Q216.5 277 204.5 270L200.5 173L219.5 320Q150 325 80.5 320L99.5 173L95.5 270Q83.5 277 65.5 270L60.5 132Q87.5 119 114.5 108Z" fill="url(#fxoot7v-cloth)" stroke="#5b6455" stroke-width="1.8"/>
+   <rect x="45" y="94" width="210" height="280" fill="url(#fxoot7v-grain)" clip-path="url(#fxoot7v-garmentclip)"/>
+   <path d="M112 116Q122 135 124 184L119 275M187 116Q177 139 176 184L181 275" fill="none" stroke="#fff" stroke-opacity=".07" stroke-width="12" clip-path="url(#fxoot7v-garmentclip)"/>
+   <path d="M97 113Q107 140 101 184M203 113Q194 140 201 184" fill="none" stroke="#4e5649" stroke-opacity=".37" stroke-width="1.4"/>
+   <path d="M117 124Q125 144 125 193M182 124Q177 143 176 194" fill="none" stroke="#fff" stroke-opacity=".1" stroke-width="3"/>
+   <path d="M119 311Q150 321 181 311" stroke="#51584b" stroke-opacity=".58" fill="none" stroke-width="3"/><path d="M72 259L98 258M202 258L228 259" stroke="#51584b" stroke-opacity=".58" fill="none" stroke-width="3"/><path d="M116 300Q150 308 184 300L183 317Q150 324 116 317Z" fill="#51584b" opacity=".23"/><path d="M117 301L184 301" stroke="#98a78d" stroke-opacity=".25" stroke-width="1.5"/><path d="M133 117Q150 138 167 117" fill="none" stroke="#51584b" stroke-width="9" stroke-opacity=".35"/>
+   </g>
+ </g></svg>
