@@ -15,7 +15,9 @@ jobs:
           node-version: '22'
       - name: Run unit tests
         run: node --test source/tests/*.test.mjs
-      - name: Test FamilyLook measurements\n        run: node --test familylook/tests/*.test.mjs\n      - name: Build modular static package
+      - name: Test FamilyLook measurements
+        run: node --test familylook/tests/*.test.mjs
+      - name: Build modular static package
         run: node source/scripts/build.mjs
       - name: Verify publish output
         run: test -s source/dist/index.html
