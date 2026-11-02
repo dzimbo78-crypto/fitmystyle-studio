@@ -1,17 +1,17 @@
-import catalog from '../catalog.json';
-export type Group='adult'|'child'|'infant';
-export type BodyType='woman'|'man'|'other'|'unspecified';
-export type MeasurementId='height'|'chest'|'waist'|'hip'|'neck'|'shoulder'|'arm'|'torso'|'bicep'|'wrist'|'inseam'|'outseam'|'head';
-export type Measurements=Partial<Record<MeasurementId,number>>;
-export interface Artwork{text:string;color:string;position:'chest'|'back';scale:number}
-export interface FamilyMember{id:string;label:string;group:Group;bodyType:BodyType;size:string;model:string;color:string;fit:'slim'|'regular'|'relaxed'|'oversize';easeOffset:number;measurements:Measurements;artwork:Artwork}
-export interface FamilyProject{id?:string;name:string;palette:string;people:FamilyMember[];seamAllowanceMm:number;shrinkagePercent:number;notes:string}
-export interface GarmentModel{id:string;name:string;type:string;groups:Group[];required:MeasurementId[];ease:Partial<Record<MeasurementId,number>>;material:string;complexity:string}
-export interface MeasurementSpec{id:MeasurementId;name:string;instruction:string;location:string;all:boolean;range:[number,number]}
-export const models=catalog.models as GarmentModel[];
-export const measurements=catalog.measurements as MeasurementSpec[];
-export const palettes=catalog.palettes as Record<string,{name:string;colors:string[]}>;
-export const newMember=(group:Group='adult',number=1):FamilyMember=>({id:crypto.randomUUID(),label:`Osoba ${number}`,group,bodyType:'unspecified',size:group==='adult'?'M':group==='child'?'110':'68',model:group==='infant'?'baby-body':'crewneck',color:'#91A18B',fit:'regular',easeOffset:0,measurements:{},artwork:{text:'',color:'#fff',position:'chest',scale:1}});
-export const initialProject=():FamilyProject=>({name:'Kolekcja rodzinna',palette:'sage',people:[newMember('adult',1),newMember('adult',2),newMember('child',3)],seamAllowanceMm:10,shrinkagePercent:0,notes:''});
-export function verify(person:FamilyMember){const m=models.find(x=>x.id===person.model);if(!m||!m.groups.includes(person.group))return {missing:[],errors:['Niezgodny model i grupa']};return {missing:m.required.filter(id=>!person.measurements[id]),errors:Object.entries(person.measurements).filter(([key,v])=>{const field=measurements.find(x=>x.id===key);return !!(field&&v&&(v<field.range[0]||v>field.range[1]))}).map(([key])=>'Nietypowy pomiar: '+key)}}
-export function finished(person:FamilyMember){const m=models.find(x=>x.id===person.model);if(!m)return [];return Object.entries(m.ease).map(([key,ease])=>{const v=person.measurements[key as MeasurementId]??null;const add=(ease??0)+person.easeOffset;return {id:key as MeasurementId,body:v,ease:add,garment:v===null?null:Number((v+add).toFixed(1))}})}
+import type {AgeGroup,FamilyLookConfig,Member,MeasureKey,ProviderDraft,TechPackReview} from './types';
+export const requiredByKind:Record<string,MeasureKey[]>={
+ tee:['height','chest','waist','hip','shoulder','backLength'],
+ crewneck:['height','chest','waist','hip','shoulder','sleeve','backLength','bicep'],
+ hoodie:['height','chest','waist','hip','shoulder','sleeve','backLength','bicep'],
+ sweater:['height','chest','waist','hip','shoulder','sleeve','backLength','bicep'],
+ shirt:['height','chest','waist','hip','neck','shoulder','sleeve','backLength','bicep'],
+ polo:['height','chest','waist','hip','shoulder','sleeve','backLength'],
+ pants:['height','waist','hip','inseam','outseam','thigh'],
+ dress:['height','chest','waist','hip','shoulder','backLength','frontLength'],
+ bodysuit:['height','chest','waist','hip','backLength']
+};
+export function sanitizeGroup(value:string):AgeGroup {return value==='child'||value==='infant'?value:'adult'}
+export function emptyMember(group:AgeGroup,number:number):Member {return {id:crypto.randomUUID(),name:`Osoba ${number}`,group,shape:'neutral',templateId:group==='infant'?'T19':'T01',fit:'regular',measurements:{}}}
+export function validateMeasurements(member:Member,kind:string):TechPackReview {const missing=(requiredByKind[kind]||[]).filter(k=>!((member.measurements[k]??0)>0));const warnings:string[]=[];if(member.measurements.height&&member.measurements.backLength&&member.measurements.backLength>=member.measurements.height)warnings.push('Długość pleców przekracza wzrost — sprawdź.');if(member.group!=='adult'&&kind==='hoodie')warnings.push('Sprawdź EN 14682: projekt bez niebezpiecznych sznurków.');return {status:missing.length?'REQUIRES_MEASUREMENTS':'READY_FOR_PATTERNMAKER',missing,warnings}}
+export function providerDraft(member:Member,kind:string):ProviderDraft {const width=kind==='bodysuit'?110:kind==='shirt'?100:260,height=kind==='bodysuit'?125:kind==='shirt'?120:300,scale=member.group==='infant'?0.5:member.group==='child'?0.72:1;return {status:'NOT_SUBMITTED',memberId:member.id,templateId:member.templateId,printAreaMm:{w:Math.round(width*scale),h:Math.round(height*scale)},providerProductId:null,providerVariantId:null,remarks:'Only draft dimensions. Verify per exact supplier product and size.'}}
+export function safeConfig(value:FamilyLookConfig):FamilyLookConfig {if(value.members.length<1||value.members.length>12)throw new Error('Wymagana liczba osób od 1 do 12.');if(value.members.some(p=>!['adult','child','infant'].includes(p.group)))throw new Error('Nieznana grupa wieku.');if(value.members.some(p=>Object.values(p.measurements).some(v=>!Number.isFinite(v)||v<=0||v>300)))throw new Error('Sprawdź pomiary w cm.');return {...value,schemaVersion:'2.0.0',title:value.title.slice(0,100),updatedAt:new Date().toISOString()}}
