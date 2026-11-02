@@ -1,7 +1,7 @@
 import {mkdir,rm,cp,copyFile,writeFile,readdir,stat} from 'node:fs/promises';
 import path from 'node:path';import {fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),output=path.join(root,'dist');
-if(!['FitMyStyle_Studio_9','source'].includes(path.basename(root)))throw Error('Safety guard: only build from the dedicated FitMyStyle directory.');
+if(!['FitMyStyle_Studio_10','source'].includes(path.basename(root)))throw Error('Safety guard: only build from the dedicated FitMyStyle directory.');
 await rm(output,{recursive:true,force:true});await mkdir(output,{recursive:true});await mkdir(path.join(output,'src'));await mkdir(path.join(output,'data'));await mkdir(path.join(output,'media'));
 const rootFiles=['index.html','icon.svg','brand-hanger.svg','manifest.webmanifest','service-worker.js','hero-family.webp','site-config.mjs'];
 for(const file of rootFiles)await copyFile(path.join(root,file),path.join(output,file));

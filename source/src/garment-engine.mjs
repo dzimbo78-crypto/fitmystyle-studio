@@ -3,6 +3,12 @@ export const GARMENT_TYPES=Object.freeze({
   hoodie:{label:'Bluza hoodie',fit:'relaxed',sleeve:'long',material:'french-terry'},
   sweatshirt:{label:'Bluza crewneck',fit:'regular',sleeve:'long',material:'french-terry'},
   shirt:{label:'Koszula',fit:'regular',sleeve:'long',material:'poplin'},
+  sweater:{label:'Sweter klasyczny',fit:'regular',sleeve:'long',material:'merino'},
+  cardigan:{label:'Kardigan',fit:'relaxed',sleeve:'long',material:'cotton-knit'},
+  knitvest:{label:'Kamizelka dzianinowa',fit:'regular',sleeve:'sleeveless',material:'merino'},
+  quarterzip:{label:'Sweter half-zip',fit:'regular',sleeve:'long',material:'merino'},
+  mockneck:{label:'Golf / mock neck',fit:'regular',sleeve:'long',material:'cotton-knit'},
+  bomber:{label:'Bluza bomber bez kaptura',fit:'relaxed',sleeve:'long',material:'french-terry'},
   tshirt:{label:'T-shirt',fit:'regular',sleeve:'short',material:'jersey'},
   polo:{label:'Polo',fit:'regular',sleeve:'short',material:'jersey'},
   jacket:{label:'Kurtka',fit:'relaxed',sleeve:'long',material:'softshell'},
@@ -10,6 +16,9 @@ export const GARMENT_TYPES=Object.freeze({
   pants:{label:'Spodnie',fit:'regular',sleeve:'long',material:'denim'}
 });
 export const FABRICS=Object.freeze({
+ 'merino':{name:'Dzianina merino (wizualizacja)',drape:.56,stretch:18,thickness:.84,texture:.85},
+ 'cotton-knit':{name:'Dzianina swetrowa bawełniana',drape:.48,stretch:15,thickness:1.18,texture:.9},
+ 'boucle':{name:'Bouclé strukturalne',drape:.39,stretch:5,thickness:1.6,texture:.95},
  'jersey':{name:'Jersey bawełniany',drape:.7,stretch:18,thickness:0.55,texture:0.7},
  'french-terry':{name:'French terry',drape:.51,stretch:12,thickness:1.15,texture:.8},
  'fleece':{name:'Dresówka drapana',drape:.45,stretch:10,thickness:1.4,texture:.9},
@@ -40,11 +49,12 @@ export function calculateGarment(input={}){
  if((type==='shirt'||type==='jacket')&&fabric==='jersey')warnings.push('Wybrana dzianina może wymagać innej konstrukcji i stabilizacji szwów.');
  if((type==='pants')&&input.sleeve)warnings.push('Długość rękawa nie dotyczy spodni.');
  if(input.seamType==='overlock'&&['poplin','linen','denim'].includes(fabric))warnings.push('Overlock może służyć do obrzucania tkaniny, ale sprawdź wymagany szew łączący.');
- if(input.seamType==='lockstitch'&&['jersey','french-terry','fleece'].includes(fabric))warnings.push('Szew prosty na dzianinie może pękać podczas rozciągania — sprawdź ścieg elastyczny.');
+ if(input.seamType==='lockstitch'&&['jersey','french-terry','fleece','merino','cotton-knit','boucle'].includes(fabric))warnings.push('Szew prosty na dzianinie może pękać podczas rozciągania — sprawdź ścieg elastyczny.');
+ if((type==='sweater'||type==='cardigan'||type==='mockneck'||type==='quarterzip')&&['poplin','softshell','denim'].includes(fabric))warnings.push('Sweter wymaga odpowiedniej dzianiny i technologii dziewiarskiej lub szycia dzianin.');
  if(fit==='slim'&&FABRICS[fabric].stretch<4)warnings.push('Niewielki luz i nierozciągliwa tkanina: zweryfikuj zakres ruchów na próbce.');
- return {type,bodyType,body,garment:measures,fit,ease:{...ease},fabric,fabricProperties:FABRICS[fabric],recommendedSeam:['jersey','french-terry','fleece'].includes(fabric)?'elastyczny/overlock + coverstitch':'stebnowy / odpowiedni do tkaniny',sleeveType,sleeveCm,lengthCm:Number(lengthCm.toFixed(1)),warnings,productionApproved:false};
+ return {type,bodyType,body,garment:measures,fit,ease:{...ease},fabric,fabricProperties:FABRICS[fabric],recommendedSeam:['jersey','french-terry','fleece','merino','cotton-knit','boucle'].includes(fabric)?'elastyczny/overlock + coverstitch':'stebnowy / odpowiedni do tkaniny',sleeveType,sleeveCm,lengthCm:Number(lengthCm.toFixed(1)),warnings,productionApproved:false};
 }
 export function getTechnicalPack(input={}){
  const m=calculateGarment(input);
- return {application:'FitMyStyle',version:'9.0',documentType:'CONCEPT_TECH_PACK',productionStatus:'NOT_APPROVED',measureUnit:'cm',measurementBasis:'BODY_CIRCUMFERENCE_PLUS_EASE',seamAllowanceCm:clampNumber(input.seamAllowanceCm??1,0,3,1),...m,views:['front','back'],operations:['Zatwierdź materiał, gramaturę i kurczliwość','Sprawdź długości łączonych szwów w wykroju CAD','Wykonaj próbny odszyw i przymiarkę','Zweryfikuj oznakowanie i bezpieczeństwo'],legalNote:'Projekt koncepcyjny. Nie jest gotową dokumentacją produkcyjną ani gwarancją dopasowania.'};
+ return {application:'FitMyStyle',version:'10.0',motif:String(input.pattern||'solid').slice(0,60),colour:/^#[0-9a-f]{6}$/i.test(input.color||'')?input.color:'#d8c3a4',productConstructionNotes:['Grubość, gramatura i skład surowca do potwierdzenia przez dostawcę','Sprzedawca musi podać rzeczywisty skład włókien przed zakupem','Wymagany próbny odszyw i weryfikacja tabeli pomiarowej'],documentType:'CONCEPT_TECH_PACK',productionStatus:'NOT_APPROVED',measureUnit:'cm',measurementBasis:'BODY_CIRCUMFERENCE_PLUS_EASE',seamAllowanceCm:clampNumber(input.seamAllowanceCm??1,0,3,1),...m,views:['front','back'],operations:['Zatwierdź materiał, gramaturę i kurczliwość','Sprawdź długości łączonych szwów w wykroju CAD','Wykonaj próbny odszyw i przymiarkę','Zweryfikuj oznakowanie i bezpieczeństwo'],legalNote:'Projekt koncepcyjny. Nie jest gotową dokumentacją produkcyjną ani gwarancją dopasowania.'};
 }

@@ -1,0 +1,10 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {TEXTILE_PATTERNS,getPattern} from '../src/surface-textures.mjs';
+import {GARMENT_TYPES,FABRICS,calculateGarment,getTechnicalPack} from '../src/garment-engine.mjs';
+import {buildProductionEnquiry,ADMIN_CONTACT} from '../src/production-request.mjs';
+test('20 exclusive textile motifs plus plain are unique',()=>{assert.equal(TEXTILE_PATTERNS.length,21);assert.equal(new Set(TEXTILE_PATTERNS.map(x=>x.id)).size,21);assert.equal(getPattern('unknown').id,'solid')});
+test('extended knitwear forms all have valid fabric and fit',()=>{for(const key of ['sweater','cardigan','quarterzip','mockneck','knitvest','bomber']){assert.ok(GARMENT_TYPES[key]);const x=calculateGarment({cut:key});assert.ok(FABRICS[x.fabric]);assert.equal(x.type,key);assert.equal(x.productionApproved,false)}});
+test('technical pack remains conceptual',()=>{const x=getTechnicalPack({cut:'sweater',fabric:'merino'});assert.equal(x.productionStatus,'NOT_APPROVED')});
+test('admin quote sanitises length and excludes body by default',()=>{const x=buildProductionEnquiry({name:'Anna',email:'anna@example.org',note:'Proszę o wycenę czterech swetrów',consent:true},{cut:'sweater',pattern:'cable-knit',color:'#dedede'});assert.ok(x.subject.startsWith('FitMyStyle'));assert.equal(x.compact.pattern,'cable-knit');assert.equal(x.compact.body,undefined);assert.match(ADMIN_CONTACT,/gmail.com/) });
+test('body measurements require explicit opt-in',()=>{const f={name:'Anna',email:'anna@example.org',note:'Proszę o wycenę czterech swetrów',consent:true,includeMeasures:true};assert.ok(buildProductionEnquiry(f,{cut:'sweater'}).compact.body.chest>0)});
+test('quote validation requires consent and proper contact',()=>{const f={name:'X',email:'bad',note:'hej',consent:false};assert.throws(()=>buildProductionEnquiry(f,{cut:'sweater'}))});

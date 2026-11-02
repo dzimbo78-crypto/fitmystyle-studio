@@ -66,3 +66,33 @@ body{margin:0}
 
 .legal-mini{position:relative;flex:0 0 auto;font-size:11px}.legal-mini summary{cursor:pointer;list-style:none;border:1px solid #8c7656;border-radius:10px;padding:9px;color:#eddbba}.legal-mini[open]>div{position:absolute;bottom:calc(100% + 12px);right:0;z-index:202;background:#fffefa;color:#302b27;padding:16px;border:1px solid #c9b38f;border-radius:12px;box-shadow:0 12px 35px #0005;width:min(440px,86vw);line-height:1.5}.legal-mini[open] a{color:#654b22;text-decoration:underline}.legal-mini p{font-size:12px;margin:9px 0}
 :focus-visible{outline:2px solid #e8ba6e;outline-offset:2px}
+
+/* FitMyStyle 10: premium textile visualization, swatch library and manual admin quote flow */
+.atelier-textile-swatches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;max-height:215px;overflow-y:auto;padding:5px;border:1px solid #dccbb3;border-radius:12px;background:#fffaf1}
+.atelier-textile-swatches button{display:flex;gap:7px;align-items:center;min-width:0;text-align:left;border:1px solid #e4d9ca;background:white;border-radius:9px;padding:5px;font-size:10px;color:#51473b;line-height:1.22;cursor:pointer;transition:border-color .18s,background .18s}
+.atelier-textile-swatches button:hover,.atelier-textile-swatches button.selected{border:2px solid #b59055;background:#f5ecdc}
+.atelier-textile-swatches canvas{flex:0 0 auto;width:35px;height:35px;border-radius:6px;border:1px solid #d5c7b7;background:#d8c3a4}
+.atelier-textile-swatches span{overflow:hidden;text-overflow:ellipsis}
+.atelier-pattern-info{font-size:11px;line-height:1.45;background:#ece6dd;color:#6a573e;border-radius:9px;padding:8px 11px}
+.atelier-request{width:100%;padding:14px 12px!important;background:linear-gradient(95deg,#ad874e,#e4c48f)!important;color:#1e2521!important;box-shadow:0 6px 16px #2c2c221c}
+.atelier-order-disclaimer{color:#82644a;line-height:1.5;font-size:10px}
+#atelier-rotate.is-spinning{background:#e0ba77;border-color:#fce6bd;color:#24231e}
+.production-enquiry-overlay[hidden]{display:none!important}
+.production-enquiry-overlay{position:fixed;inset:0;background:#151b17dd;z-index:9999;display:flex;justify-content:center;align-items:center;overflow-y:auto;padding:20px;backdrop-filter:blur(5px)}
+.production-enquiry-card{width:min(600px,100%);max-height:94vh;overflow-y:auto;position:relative;border:1px solid #e0ceb2;border-radius:22px;background:#fbf7f1;color:#262521;box-shadow:0 25px 80px #0008;padding:clamp(18px,4vw,32px)}
+.production-enquiry-card h2{font-size:clamp(24px,3vw,32px);margin:8px 0;color:#243529}
+.production-enquiry-card>p,.quote-privacy{font-size:12px;color:#655c4f;line-height:1.6}
+.production-close{position:absolute;right:20px;top:17px;border:1px solid #cdb993;border-radius:50%;width:32px;height:32px;background:#fff;color:#3c3428;font-size:23px;cursor:pointer}
+.quote-overline{font-size:10px;letter-spacing:.16em;color:#9a7847;font-weight:800}
+#production-form{display:flex;flex-direction:column;gap:12px}
+#production-form label{font-weight:750;font-size:12px;color:#332b22}
+#production-form input:not([type=checkbox]),#production-form textarea{display:block;width:100%;box-sizing:border-box;border-radius:10px;border:1px solid #d6c3a8;margin-top:6px;padding:12px;background:#fff;color:#202721;font:inherit;font-weight:400}
+#production-form .quote-check{display:flex;align-items:start;gap:10px;font-size:11px;font-weight:500;line-height:1.5}
+#production-form .quote-check input{flex:0 0 auto;accent-color:#496b54;margin-top:3px}
+.quote-actions{display:flex;gap:8px;flex-wrap:wrap}
+.quote-actions button{cursor:pointer;border:1px solid #c8b796;border-radius:10px;padding:10px 13px;background:white;color:#282c26;font-weight:700}
+.quote-actions button:first-child{background:#274638;color:#fff;border-color:#274638}
+.quote-actions button:disabled{opacity:.5;cursor:wait}
+#production-status{font-size:12px;color:#355c44;line-height:1.55;margin:4px 0}
+#production-status[data-error=true]{color:#a23c32}
+@media(max-width:550px){.atelier-textile-swatches{grid-template-columns:repeat(2,minmax(0,1fr))}.production-enquiry-overlay{padding:8px}.production-enquiry-card{padding:18px}}

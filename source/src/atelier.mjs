@@ -1,5 +1,6 @@
 /** FitMyStyle Studio 9: procedural, fabric-shaped 3D garment preview. No external API, no physical simulation. */
 import {calculateGarment,getTechnicalPack,FABRICS} from './garment-engine.mjs';
+import {TEXTILE_PATTERNS,drawTextileTile,getPattern} from './surface-textures.mjs';
 const TAU=Math.PI*2,PI=Math.PI,clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const rgb=(hex)=>{const h=/^#[0-9a-f]{6}$/i.test(hex||'')?hex.substring(1):'c9b79c';return [0,2,4].map(i=>parseInt(h.slice(i,i+2),16))};
 const tone=(hex,m)=>`rgb(${rgb(hex).map(x=>clamp(Math.round(x*m),0,255)).join(',')})`;
@@ -7,11 +8,14 @@ const $=id=>document.getElementById(id);
 export function initAtelier(){
  const canvas=$('atelier-canvas');if(!canvas||canvas.dataset.initialized)return;canvas.dataset.initialized='1';
  const ctx=canvas.getContext('2d',{alpha:true});if(!ctx)return;
- let angle=-.22,zoom=1,auto=false,pointer=null,frame=0;const faces=[],strokes=[];
+ const select=$('atelier-pattern');if(select){select.replaceChildren(...TEXTILE_PATTERNS.map(p=>{const opt=document.createElement('option');opt.value=p.id;opt.textContent=p.group+' · '+p.name;return opt}));select.value='solid';const swatches=$('atelier-textile-swatches');if(swatches){for(const motif of TEXTILE_PATTERNS){const btn=document.createElement('button');btn.type='button';btn.title=motif.name;btn.dataset.motif=motif.id;btn.setAttribute('aria-label',motif.name);const tex=document.createElement('canvas');drawTextileTile(tex,motif.id);btn.append(tex);const label=document.createElement('span');label.textContent=motif.name;btn.append(label);btn.addEventListener('click',()=>{select.value=motif.id;select.dispatchEvent(new Event('change'));swatches.querySelectorAll('button').forEach(x=>x.classList.toggle('selected',x===btn))});if(motif.id==='solid')btn.classList.add('selected');swatches.append(btn)}}}
+
+ let angle=-.22,zoom=1,auto=false,pointer=null,frame=0,lastFrame=0;const faces=[],strokes=[];const tileCache=new Map();
+ const patternTile=id=>{if(tileCache.has(id))return tileCache.get(id);const cnv=document.createElement('canvas');drawTextileTile(cnv,id);const t=ctx.createPattern(cnv,'repeat');tileCache.set(id,t);return t};
  const val=(id,fallback='')=>$(id)?.value??fallback;
  const checked=(id,fallback=false)=>$(id)?.checked??fallback;
- const config=()=>({cut:val('atelier-cut','hoodie'),body:val('atelier-body','woman'),color:val('atelier-color','#d8c3a4'),stitch:val('atelier-stitch','#705442'),fit:val('atelier-fit','regular'),fabric:val('atelier-fabric','french-terry'),sleeve:val('atelier-sleeve','long'),hem:val('atelier-hem','rib'),seams:checked('atelier-seams',true),wire:checked('atelier-wire'),silhouette:checked('atelier-silhouette',true),bottom:checked('atelier-bottom',true),bottomColor:val('atelier-bottom-color','#8d8b80'),chest:Number(val('atelier-chest',92)),waist:Number(val('atelier-waist',76)),hip:Number(val('atelier-hip',98)),height:Number(val('atelier-height',168)),seamAllowanceCm:1,seamType:val('atelier-seam-type','auto')});
- function project(p){const cs=Math.cos(angle),sn=Math.sin(angle),xx=p[0]*cs+p[2]*sn,zz=p[2]*cs-p[0]*sn;const sc=zoom*98/(1+zz*.035);return [450+xx*sc,405-p[1]*sc,zz]}
+ const config=()=>({cut:val('atelier-cut','hoodie'),body:val('atelier-body','woman'),color:val('atelier-color','#d8c3a4'),stitch:val('atelier-stitch','#705442'),fit:val('atelier-fit','regular'),fabric:val('atelier-fabric','french-terry'),sleeve:val('atelier-sleeve','long'),hem:val('atelier-hem','rib'),seams:checked('atelier-seams',true),wire:checked('atelier-wire'),silhouette:checked('atelier-silhouette',true),bottom:checked('atelier-bottom',true),bottomColor:val('atelier-bottom-color','#8d8b80'),pattern:val('atelier-pattern','solid'),chest:Number(val('atelier-chest',92)),waist:Number(val('atelier-waist',76)),hip:Number(val('atelier-hip',98)),height:Number(val('atelier-height',168)),seamAllowanceCm:1,seamType:val('atelier-seam-type','auto')});
+ function project(p){const cs=Math.cos(angle),sn=Math.sin(angle),xx=p[0]*cs+p[2]*sn,zz=p[2]*cs-p[0]*sn;const focus=val('atelier-view-mode','garment')==='garment'&&val('atelier-cut','hoodie')!=='pants';const sc=zoom*(focus?145:98)/(1+zz*.035);return [450+xx*sc,focus?385-(p[1]-1.50)*sc:405-p[1]*sc,zz]}
  function face(p,material,kind='cloth',wire=false){const coords=p.map(project),depth=coords.reduce((s,v)=>s+v[2],0)/4;
   // Per-facet lighting with stronger rim shading and a soft cloth texture variation.
   const u=[p[1][0]-p[0][0],p[1][1]-p[0][1],p[1][2]-p[0][2]],v=[p[3][0]-p[0][0],p[3][1]-p[0][1],p[3][2]-p[0][2]];
@@ -22,7 +26,7 @@ export function initAtelier(){
  }
  function mesh(rows,color,material='jersey',wire=false){for(let i=0;i<rows.length-1;i++)for(let j=0;j<rows[i].length-1;j++)face([rows[i][j],rows[i][j+1],rows[i+1][j+1],rows[i+1][j]],color,material,wire)}
  function ellipsoid(cx,cy,cz,rx,ry,rz,col,mat='skin',wire=false){const rows=[];for(let i=0;i<=16;i++){const a=PI*i/16;const row=[];for(let j=0;j<=28;j++){const t=TAU*j/28;row.push([cx+rx*Math.sin(a)*Math.cos(t),cy+ry*Math.cos(a),cz+rz*Math.sin(a)*Math.sin(t)])}rows.push(row)}mesh(rows,col,mat,wire)}
- function loft(sections,col,mat='jersey',wire=false,fold=.015){const rows=[];for(let i=0;i<sections.length;i++){const s=sections[i],row=[];for(let j=0;j<=32;j++){const a=TAU*j/32;const foldAmount=fold*(.55+.45*Math.sin(i*1.13))*(Math.sin(7*a+i*.8)+.4*Math.cos(12*a-i*.37));let rx=s.rx+foldAmount,rz=s.rz+foldAmount*.62;row.push([s.x+Math.cos(a)*rx,s.y,s.z+Math.sin(a)*rz])}rows.push(row)}mesh(rows,col,mat,wire);return rows}
+ function loft(sections,col,mat='jersey',wire=false,fold=.015){const rows=[];for(let i=0;i<sections.length;i++){const s=sections[i],row=[];for(let j=0;j<=48;j++){const a=TAU*j/48;const foldAmount=fold*(.55+.45*Math.sin(i*1.13))*(Math.sin(7*a+i*.8)+.4*Math.cos(12*a-i*.37));let rx=s.rx+foldAmount,rz=s.rz+foldAmount*.62;row.push([s.x+Math.cos(a)*rx,s.y,s.z+Math.sin(a)*rz])}rows.push(row)}mesh(rows,col,mat,wire);return rows}
  function line(pts,col,width=1.3,{dash=[],visibility='all'}={}){strokes.push({p:pts.map(project),col,width,dash,visibility})}
  function ring(y,cx,cz,rx,rz,col,width=1.3,material='all'){const p=[];for(let i=0;i<=48;i++){const a=TAU*i/48;p.push([cx+Math.cos(a)*rx,y,cz+Math.sin(a)*rz])}line(p,col,width,{visibility:material})}
  function curve(pts,col,w=1.1,opts={}){const out=[];for(let i=0;i<pts.length-1;i++){const a=pts[i],b=pts[i+1];for(let j=0;j<5;j++){let t=j/5;out.push(a.map((x,k)=>x*(1-t)+b[k]*t))}}out.push(pts.at(-1));line(out,col,w,opts)}
@@ -40,7 +44,7 @@ export function initAtelier(){
   }
   const torsoEnd=c.cut==='dress'?g(.39):g(.48),torsoTop=g(2.79);
   if(c.cut!=='pants'){
-   const sections=[];for(let i=0;i<=30;i++){const t=i/30,y=torsoTop-(torsoTop-torsoEnd)*t;const chestToWaist=t<.56?t/.56:1;const rad= t<.56?rCh*(1-chestToWaist)+rWa*chestToWaist:rWa+(rHip-rWa)*(t-.56)/.44;
+   const sections=[];for(let i=0;i<=43;i++){const t=i/43,y=torsoTop-(torsoTop-torsoEnd)*t;const chestToWaist=t<.56?t/.56:1;const rad= t<.56?rCh*(1-chestToWaist)+rWa*chestToWaist:rWa+(rHip-rWa)*(t-.56)/.44;
     const upper=t<.12?Math.sqrt(Math.max(.64,1-((.12-t)/.38)**2)):1;
     sections.push({x:0,y,z:0,rx:rad*upper,rz:rz*(t<.58?1-t*.12:.93+(t-.58)*.18)});
    }
@@ -49,7 +53,7 @@ export function initAtelier(){
    let short=m.sleeveType==='short',three=m.sleeveType==='three-quarter',none=m.sleeveType==='sleeveless';
    if(!none)for(const dir of [-1,1]){
     const sleeveLength=short?.49:three?1.22:1.93;const rows=[];
-    for(let i=0;i<=28;i++){const t=i/28,shoulderT=Math.min(1,t*5),x=g(dir*(.64*shoulderFactor + .09*Math.sin(t*PI*.6)+.15*t)),y=g(2.75-sleeveLength*t),z=g(-.015-.065*Math.sin(t*PI)),
+    for(let i=0;i<=32;i++){const t=i/32,shoulderT=Math.min(1,t*5),x=g(dir*(.64*shoulderFactor + .09*Math.sin(t*PI*.6)+.15*t)),y=g(2.75-sleeveLength*t),z=g(-.015-.065*Math.sin(t*PI)),
       rad=g((short?.265:.27)*(1-.37*t)+.029*Math.sin(t*PI*2)*(1-t));
      rows.push({x,y,z,rx:rad,rz:rad*.88})
     }
@@ -75,15 +79,22 @@ export function initAtelier(){
        curve([[g(-.39),g(1.46),g(-.40)],[g(-.44),g(1.19),g(-.40)],[g(-.26),g(.91),g(-.44)],[g(.26),g(.91),g(-.44)],[g(.44),g(1.19),g(-.40)],[g(.39),g(1.46),g(-.40)]],accent,1.4,{visibility:'front'});
      }
    }
-   if(['shirt','polo','jacket'].includes(c.cut)){
+   if(['shirt','polo','jacket','cardigan','quarterzip','bomber'].includes(c.cut)){
      // collar points and central button placket (z negative = front in this renderer).
      const frontZ=g(-.39);curve([[g(-.30),g(2.81),frontZ],[g(-.18),g(2.54),g(-.48)],[g(0),g(2.62),g(-.52)]],accent,2,{visibility:'front'});
      curve([[g(.30),g(2.81),frontZ],[g(.18),g(2.54),g(-.48)],[0,g(2.62),g(-.52)]],accent,2,{visibility:'front'});
      if(c.seams)curve([[0,g(2.60),g(-.53)],[0,g(.57),g(-.42)]],accent,1.4,{visibility:'front'});
      for(let j=0;j<6;j++)if(c.seams)line([[0,g(2.28-j*.30),g(-.505-j*.016)],[g(.012),g(2.28-j*.30),g(-.505-j*.016)]],tone(accent,.77),3,{visibility:'front'});
-     if(c.cut==='shirt'&&c.seams)for(const dir of [-1,1]){
+     if(['shirt','cardigan'].includes(c.cut)&&c.seams)for(const dir of [-1,1]){
        curve([[g(dir*.21),g(2.28),g(-.45)],[g(dir*.48),g(2.27),g(-.4)],[g(dir*.48),g(1.88),g(-.41)],[g(dir*.21),g(1.88),g(-.45)],[g(dir*.21),g(2.28),g(-.45)]],accent,1.15,{visibility:'front'});
      }
+   }
+   if(['sweater','mockneck','quarterzip','cardigan','knitvest','sweatshirt','bomber'].includes(c.cut)){
+     const neckY=g(2.84);const collarHeight=c.cut==='mockneck'?.24:c.cut==='quarterzip'?.16:.08;
+     loft([{x:0,y:neckY,z:0,rx:g(.275),rz:g(.22)},{x:0,y:neckY+g(collarHeight),z:0,rx:g(.265),rz:g(.214)}],tone(cloth,.80),fabric,wire,.003);
+     if(c.cut==='quarterzip'&&c.seams){curve([[0,g(2.81),g(-.29)],[0,g(2.35),g(-.43)]],accent,3,{visibility:'front'});ring(g(2.36),0,g(-.44),g(.015),g(.015),accent,1)}
+     if(c.cut==='cardigan'&&c.seams){curve([[0,g(2.79),g(-.38)],[0,g(.50),g(-.4)]],accent,2,{visibility:'front'});for(let j=0;j<6;j++)line([[0,g(2.40-j*.28),g(-.46)],[g(.018),g(2.4-j*.28),g(-.46)]],tone(accent,.8),2.4,{visibility:'front'})}
+     if(c.cut==='bomber'){ring(g(.51),0,0,rHip*.94,rz*.96,accent,2);}
    }
    if(c.seams){for(const dir of [-1,1])curve([[dir*rCh*.94,g(2.5),g(-.12)],[dir*rWa*.99,g(1.48),g(-.09)],[dir*rHip*.95,g(.62),g(-.08)]],accent,1.1,{visibility:'side'});
       ring(g(.49),0,0,rHip,rz,accent,1.3);
@@ -94,22 +105,30 @@ export function initAtelier(){
  function draw(){const {c,m}=renderGarment();ctx.clearRect(0,0,900,700);const grad=ctx.createRadialGradient(440,310,25,440,330,540);grad.addColorStop(0,'#4d514c');grad.addColorStop(.55,'#232825');grad.addColorStop(1,'#131917');ctx.fillStyle=grad;ctx.fillRect(0,0,900,700);
   ctx.save();ctx.strokeStyle='#d4b98918';ctx.lineWidth=1;for(let i=0;i<8;i++){ctx.beginPath();ctx.ellipse(450,635,i*37,Math.max(2,i*10),0,0,TAU);ctx.stroke()}ctx.restore();
   faces.sort((a,b)=>b.depth-a.depth);
-  for(const f of faces){ctx.beginPath();f.coords.forEach((v,i)=>i?ctx.lineTo(v[0],v[1]):ctx.moveTo(v[0],v[1]));ctx.closePath();ctx.fillStyle=f.color;ctx.fill();if(f.wire){ctx.strokeStyle='#f6f0df44';ctx.lineWidth=.52;ctx.stroke()}}
+  // Textiles are drawn on the surface facets, not on top of the silhouette: folds and depth shade the motif.
+  const textile=patternTile(c.pattern);const patterned=c.pattern!=='solid';
+  for(const f of faces){ctx.beginPath();f.coords.forEach((v,i)=>i?ctx.lineTo(v[0],v[1]):ctx.moveTo(v[0],v[1]));ctx.closePath();ctx.fillStyle=f.color;ctx.fill();
+    if(patterned&&f.kind===m.fabric){ctx.save();ctx.globalAlpha=.43;ctx.fillStyle=textile;ctx.fill();ctx.restore()}
+    if(f.wire){ctx.strokeStyle='#f6f0df38';ctx.lineWidth=.42;ctx.stroke()}}
+  // Subtle contour shading under the stitching; deliberately not presented as calibrated fabric physics.
+
   if(c.seams){for(const s of strokes){const viewing=Math.cos(angle);if(s.visibility==='front'&&viewing<-.17)continue;if(s.visibility==='back'&&viewing>.17)continue;
    if(s.visibility==='side'&&Math.abs(Math.sin(angle))<.35)continue;ctx.beginPath();s.p.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=s.col;ctx.lineWidth=s.width;ctx.setLineDash(s.dash);ctx.stroke();ctx.setLineDash([])}}
-  ctx.fillStyle='#e6cb9c';ctx.font='bold 13px system-ui';ctx.fillText('FitMyStyle · GARMENT PREVIEW 9.0',24,670);
-  ctx.font='12px system-ui';ctx.fillStyle='#d3c1a1';ctx.fillText(m.fabricProperties.name+'  ·  '+m.fit+'  ·  '+m.sleeveType,24,690);
+  ctx.fillStyle='#e6cb9c';ctx.font='bold 13px system-ui';ctx.fillText('FitMyStyle · TEXTILE ATELIER 10.0',24,670);
+  ctx.font='12px system-ui';ctx.fillStyle='#d3c1a1';ctx.fillText(m.fabricProperties.name+'  ·  '+getPattern(c.pattern).name+'  ·  '+m.fit,24,690);
   if($('atelier-angle'))$('atelier-angle').textContent=(((Math.round(angle*180/PI)%360)+360)%360)+'°';
   const result=$('atelier-measure-result');if(result)result.textContent=`Ciało ${m.body.chest.toFixed(0)} / ${m.body.waist.toFixed(0)} / ${m.body.hip.toFixed(0)} cm  →  ubranie ${m.garment.chest.toFixed(0)} / ${m.garment.waist.toFixed(0)} / ${m.garment.hip.toFixed(0)} cm  • luz w klatce +${m.ease.chest} cm`;
   const caution=$('atelier-garment-warning');if(caution)caution.textContent=m.warnings.join(' ')||'Podgląd poglądowy. Wymiary odzieży i sylwetki wymagają przymiarki i walidacji fizycznego odszywu.';
  }
  function updateBodyPreset(){const d=calculateGarment({body:val('atelier-body','woman')}).body;for(const k of ['height','chest','waist','hip'])if($('atelier-'+k))$('atelier-'+k).value=d[k];draw()}
- for(const id of ['cut','body','color','stitch','fit','fabric','sleeve','hem','seam-type','seams','wire','silhouette','bottom','bottom-color','height','chest','waist','hip'])$('atelier-'+id)?.addEventListener('input',id==='body'?updateBodyPreset:draw);
+ for(const id of ['cut','body','view-mode','color','stitch','fit','fabric','sleeve','hem','seam-type','seams','wire','silhouette','bottom','bottom-color','pattern','height','chest','waist','hip'])$('atelier-'+id)?.addEventListener('input',id==='body'?updateBodyPreset:draw);
  $('atelier-zoom')?.addEventListener('input',e=>{zoom=Number(e.target.value)/100;draw()});
- canvas.addEventListener('pointerdown',e=>{pointer=e.clientX;canvas.setPointerCapture(e.pointerId);auto=false});canvas.addEventListener('pointermove',e=>{if(pointer===null)return;angle+=(e.clientX-pointer)*.012;pointer=e.clientX;draw()});canvas.addEventListener('pointerup',()=>pointer=null);canvas.addEventListener('pointercancel',()=>pointer=null);canvas.addEventListener('wheel',e=>{if(!$('#mannequin')?.classList.contains('active-page'))return;e.preventDefault();zoom=clamp(zoom-e.deltaY*.001,.7,1.45);$('atelier-zoom').value=Math.round(zoom*100);draw()},{passive:false});
- $('atelier-rotate')?.addEventListener('click',()=>{auto=!auto;$('atelier-rotate').textContent=auto?'Ⅱ Zatrzymaj':'▶ Autoobrót'});
- $('atelier-front')?.addEventListener('click',()=>{auto=false;angle=0;draw()});$('atelier-back')?.addEventListener('click',()=>{auto=false;angle=PI;draw()});
- $('atelier-left')?.addEventListener('click',()=>{auto=false;angle=-PI/2;draw()});$('atelier-right')?.addEventListener('click',()=>{auto=false;angle=PI/2;draw()});
+ canvas.addEventListener('pointerdown',e=>{pointer=e.clientX;canvas.setPointerCapture(e.pointerId);auto=false;updateRotateState()});canvas.addEventListener('pointermove',e=>{if(pointer===null)return;angle+=(e.clientX-pointer)*.012;pointer=e.clientX;draw()});canvas.addEventListener('pointerup',()=>pointer=null);canvas.addEventListener('pointercancel',()=>pointer=null);canvas.addEventListener('wheel',e=>{if(!$('#mannequin')?.classList.contains('active-page'))return;e.preventDefault();zoom=clamp(zoom-e.deltaY*.001,.7,1.45);$('atelier-zoom').value=Math.round(zoom*100);draw()},{passive:false});
+ function updateRotateState(){const b=$('atelier-rotate');if(b){b.textContent=auto?'Ⅱ Zatrzymaj obrót':'▶ Autoobrót';b.setAttribute('aria-pressed',String(auto));b.classList.toggle('is-spinning',auto)}}
+ $('atelier-rotate')?.addEventListener('click',()=>{auto=!auto;updateRotateState();lastFrame=0;if(auto)draw()});
+
+ $('atelier-front')?.addEventListener('click',()=>{auto=false;updateRotateState();angle=0;draw()});$('atelier-back')?.addEventListener('click',()=>{auto=false;updateRotateState();angle=PI;draw()});
+ $('atelier-left')?.addEventListener('click',()=>{auto=false;updateRotateState();angle=-PI/2;draw()});$('atelier-right')?.addEventListener('click',()=>{auto=false;updateRotateState();angle=PI/2;draw()});
  $('atelier-snapshot')?.addEventListener('click',()=>{canvas.toBlob(blob=>{if(!blob)return;saveBlob(blob,'fitmystyle-9-preview.png')},'image/png')});
  function saveBlob(blob,name){const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000)}
  const comparisons={A:null,B:null};const savedKey='fitmystyle-atelier-comparisons-v9';
@@ -122,7 +141,12 @@ export function initAtelier(){
  $('atelier-spec')?.addEventListener('click',()=>{saveBlob(new Blob([JSON.stringify(getTechnicalPack(config()),null,2)],{type:'application/json'}),'fitmystyle-9-tech-pack.json')});
  $('atelier-sheet')?.addEventListener('click',()=>{const current=angle;angle=0;draw();const front=canvas.toDataURL('image/png');angle=PI;draw();const back=canvas.toDataURL('image/png');angle=current;draw();const m=getTechnicalPack(config());const esc=s=>String(s).replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));const rows=Object.entries({...m.body,...Object.fromEntries(Object.entries(m.garment).map(([k,v])=>['odzież_'+k,v]))}).map(([k,v])=>`<tr><th>${esc(k)}</th><td>${esc(v)} cm</td></tr>`).join('');const w=window.open('','_blank','width=950,height=900');if(!w){alert('Zezwól na wyskakujące okna, aby wydrukować kartę.');return}w.opener=null;w.document.write(`<!doctype html><html lang="pl"><head><meta charset="utf-8"><title>FitMyStyle – karta techniczna</title><style>body{font:14px Arial;margin:26px;color:#202522}h1{font-size:23px}.views{display:flex;gap:12px}.views img{width:48%;object-fit:contain}table{border-collapse:collapse;width:100%}th,td{padding:5px;border:1px solid #ccc;text-align:left}small{color:#634}@media print{button{display:none}}</style></head><body><h1>FitMyStyle · karta techniczna / CONCEPT</h1><p><strong>Fason:</strong> ${esc(m.type)} · ${esc(m.fit)} · ${esc(m.fabricProperties.name)}</p><div class="views"><img src="${front}" alt="Przód"><img src="${back}" alt="Tył"></div><h2>Wymiary i konstrukcja</h2><table>${rows}</table><p>Luz klatki: +${m.ease.chest} cm. Zapas na szew: ${m.seamAllowanceCm} cm — osobno od luzu.</p><small>Wizualizacja poglądowa; nie jest dopuszczeniem do produkcji. Przed krojeniem wykonaj profesjonalny wykrój CAD i prototyp.</small><p><button onclick="window.print()">Drukuj / Zapisz PDF</button></p></body></html>`);w.document.close()});
  $('atelier-patterns')?.addEventListener('click',()=>{window.FitMyStyleBridge?.navigate('patterns');document.dispatchEvent(new CustomEvent('fms:navigation',{detail:{page:'patterns'}}))});
- window.addEventListener('fms:preview',event=>{const {member,product}=event.detail||{};if(!product)return;const name=String(product.name||'').toLowerCase();const cut=/dress|sukien/.test(name)?'dress':/hood|bluz/.test(name)?'hoodie':/koszul|shirt/.test(name)?'shirt':/polo/.test(name)?'polo':/jacket|kurtk/.test(name)?'jacket':/trouser|pants|spodn/.test(name)?'pants':'tshirt';$('atelier-cut').value=cut;$('atelier-body').value=member?.role==='child'?'child':member?.role==='man'?'man':'woman';if(/^#[0-9a-f]{6}$/i.test(product.colorHex||''))$('atelier-color').value=product.colorHex;$('atelier-bottom').checked=cut!=='pants';const old=$('atelier-note-product');old?.remove();const note=document.createElement('p');note.id='atelier-note-product';note.className='atelier-note';note.textContent='Wybrano: '+String(product.name||'projekt')+'. Dopasowany jest typ fasonu i kolor — to nie jest zeskanowany produkt sklepu.';document.querySelector('.atelier-form')?.prepend(note);updateBodyPreset()});
- function animate(){if(auto&&$('#mannequin')?.classList.contains('active-page')&&!document.hidden){angle+=.009;draw()}frame=requestAnimationFrame(animate)}
- draw();frame=requestAnimationFrame(animate);window.addEventListener('pagehide',()=>cancelAnimationFrame(frame),{once:true});
+ window.addEventListener('fms:preview',event=>{const {member,product}=event.detail||{};if(!product)return;const name=String(product.name||'').toLowerCase();const cut=/sweter|sweater|knit/.test(name)?'sweater':/dress|sukien/.test(name)?'dress':/hood|bluz/.test(name)?'hoodie':/koszul|shirt/.test(name)?'shirt':/polo/.test(name)?'polo':/jacket|kurtk/.test(name)?'jacket':/trouser|pants|spodn/.test(name)?'pants':'tshirt';$('atelier-cut').value=cut;$('atelier-body').value=member?.role==='child'?'child':member?.role==='man'?'man':'woman';if(/^#[0-9a-f]{6}$/i.test(product.colorHex||''))$('atelier-color').value=product.colorHex;$('atelier-bottom').checked=cut!=='pants';const old=$('atelier-note-product');old?.remove();const note=document.createElement('p');note.id='atelier-note-product';note.className='atelier-note';note.textContent='Wybrano: '+String(product.name||'projekt')+'. Dopasowany jest typ fasonu i kolor — to nie jest zeskanowany produkt sklepu.';document.querySelector('.atelier-form')?.prepend(note);updateBodyPreset()});
+ function animate(now){
+   // Run independently of route-class transitions, with frame pacing for slower laptops.
+   if(auto&&!document.hidden&&canvas.isConnected&&now-lastFrame>=38){const step=lastFrame?Math.min((now-lastFrame)/1000,.1):.038;angle=(angle+step*.5)%TAU;lastFrame=now;draw()}
+   frame=requestAnimationFrame(animate)
+ }
+ $('atelier-pattern')?.addEventListener('change',()=>{const t=getPattern(val('atelier-pattern'));$('atelier-pattern-info').textContent=t.name+' · '+t.description;document.querySelectorAll('#atelier-textile-swatches button').forEach(b=>b.classList.toggle('selected',b.getAttribute('data-motif')===t.id));draw()});
+ draw();updateRotateState();frame=requestAnimationFrame(animate);window.addEventListener('pagehide',()=>cancelAnimationFrame(frame),{once:true});
 }

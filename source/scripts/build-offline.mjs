@@ -1,6 +1,6 @@
 /** Standalone offline preview: self-contained HTML without external scripts. */
 import {readFile,writeFile} from 'node:fs/promises';import path from 'node:path';import {fileURLToPath} from 'node:url';
-const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');if(!['FitMyStyle_Studio_9','source'].includes(path.basename(root)))throw Error('Standalone-only guard');
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');if(!['FitMyStyle_Studio_10','source'].includes(path.basename(root)))throw Error('Standalone-only guard');
 const cache=new Map();
 async function dataModule(file){const resolved=path.resolve(root,file);if(!resolved.startsWith(root+path.sep)||!resolved.endsWith('.mjs'))throw Error('Unsafe import');if(cache.has(resolved))return cache.get(resolved);
  let code=await readFile(resolved,'utf8');const imports=[...code.matchAll(/(from\s+['"])(\.\.?\/[^'"]+)(['"])/g)];for(const m of [...imports].reverse()){const mod=await dataModule(path.relative(root,path.resolve(path.dirname(resolved),m[2])));code=code.slice(0,m.index)+m[1]+mod+m[3]+code.slice(m.index+m[0].length)}const uri='data:text/javascript;base64,'+Buffer.from(code).toString('base64');cache.set(resolved,uri);return uri;}

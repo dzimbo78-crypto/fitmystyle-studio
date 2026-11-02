@@ -2,6 +2,7 @@ import {guestStorage} from './safe-session.mjs';
 const sessionStorage = guestStorage;
 /** FitMyStyle independent storefront + optional Supabase Auth. No tokens or service keys are bundled. */
 import {initAtelier} from './atelier.mjs';
+import {initProductionRequests} from './production-request.mjs';
 import {SUPABASE_URL,SUPABASE_ANON_KEY} from '../site-config.mjs';
 const $=selector=>document.querySelector(selector);
 const site=$('#public-site'),shell=$('#fms-app-shell'),modal=$('#fms-auth-modal');
@@ -37,7 +38,7 @@ document.addEventListener('fms:navigation',ev=>{if(!shell.hidden){sessionStorage
 document.addEventListener('fms:changed',()=>{if(logged&&!loadingCloud){clearTimeout(saveTimer);saveTimer=setTimeout(cloudSave,1200)}});
 window.addEventListener('beforeunload',()=>{clearTimeout(saveTimer)});
 const previous=sessionStorage.getItem('fms-page')||'landing';if(previous==='landing')showLanding();else openPage(previous);
-initAtelier();restoreLogin();
+initAtelier();initProductionRequests();restoreLogin();
 
 /** Privacy center: only FitMyStyle-owned keys in this origin are removed. */
 function downloadGuestBackup(){
