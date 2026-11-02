@@ -1,42 +1,25 @@
-# FamilyLook Studio — architektura izolowana
+# FitMyStyle FamilyLook Studio — architektura krawiecka
 
-```
-FitMyStyle homepage (existing Render static service)
-  ↳ link to dedicated FamilyLook Render Static Site
-      ↳ Browser guest (sessionStorage, no paid AI)
-      ↳ SVG base garment templates (20)
-      ↳ Family planner (adult/child/infant, 1–12 persons)
-      ↳ 13 body measurement guides per person
-      ↳ Tech Pack preview / print-to-PDF / JSON / draft email
+## Dwie odrębne warstwy
+1. **Baza fasonu** — 20 predefiniowanych konstrukcji podglądowych; dla nowego koloru lub nadruku nie generujemy nowego obrazu AI.
+2. **Warstwy projektu** — paleta, materiał, fason, przynależność do grupy wiekowej, tekst i załączony obraz. Każdy członek rodziny ma osobne pomiary.
 
-For future deployment only:
-Next.js 16 + React 19 + Tailwind 4 (separate server-capable deployment)
-      ↳ Supabase Auth (magic link) + RLS private family_projects
-      ↳ FastAPI (optional PDF provider and AI 503 fallback)
-      ↳ provider adapter requires verified product SKU/variant/print areas
-```
+## Pomiar a konstrukcja
+Dane `measurements` są wyłącznie obwodami i długościami **ciała** w cm. `calculateGarment` zwraca **robocze** cele wymiarów ubrania poprzez dodanie sugerowanego luzu. Luz nie jest zapasem na szew ani automatycznie wykonanym wykrojem. Długości rękawa i nogawek są zapisywane w dokumentacji, a ich końcowa wartość wymaga decyzji konstruktora (również mankiety i podwinięcia). 
 
-The browser implementation is **live-capable without credentials**. The Next.js source is typed, and its backend/login require separate infrastructure before any production claim. No external shop or manufacturer credentials are embedded. Payment endpoints do not exist.
+## Techniczny pakiet dla krawca
+Osobny arkusz A4 dla osoby: charakterystyka, fason, rodzaj materiału, pomiary ciała, brakujące dane, orientacyjne docelowe obwody, pole nadruku w mm, uwagi, ryzyka dla odzieży dziecięcej, miejsce zatwierdzenia. Export HTML → drukuj/zapisz do PDF; CSV pomiarów; JSON techniczny. Pomiary nie są udostępniane nikomu automatycznie.
 
-### Production entities and invariants
+## Grupy wiekowe
+Dorośli: każdy rodzaj sylwetki (kobieta, mężczyzna, neutralna) bez automatycznych założeń o anatomii.
+Dziecko: dopasowane fasony z katalogu; projekt sznurków przy kapturze wymaga kontroli według EN 14682.
+Niemowlę: osobne body, pomiary wykonywane przy opiece dorosłego, bez ucisku, z minimalizacją zbędnych pomiarów i elementów potencjalnie niebezpiecznych.
 
-- `FamilyProject` has 1–12 `FamilyMember` records.
-- Every member owns independently: group (`adult|child|infant`), optionally a body shape category, size label, measurement values, garment ID, and artwork layer.
-- A garment must explicitly support that member's group.
-- Measurements are always centimetres of a human body. Garment ease is separately labelled.
-- An absent measurement must remain `null`/blank; never synthesized.
-- `TechPack` requires operator confirmation even with complete body measurements.
-- Saved user projects: only authenticated `user_id` can read/update/delete via RLS.
-- Supplier dispatch is disabled. Adapter drafts have null external IDs by design.
+## Proces komercyjny (jeszcze nieaktywny)
+Pomiar → zatwierdzenie krawieckie → wykonanie próbki → kontrola wymiarów / kurczliwości → zatwierdzenie do produkcji → dopiero wtedy mapowanie wariantu producenta. Żaden obecny szablon nie jest automatycznie zatwierdzony do seryjnego szycia. Brak autoryzowanych SKUs, brak automatycznej wysyłki do szwalni, brak płatności.
 
-### Follow-on work, not simulated as completed
+## Ochrona danych
+Tryb gościa: sessionStorage (zależne od przywracania kart przez przeglądarkę). Wersja Next/Supabase to kod startowy i migracja, a nie uruchomiony backend. RLS ogranicza dostęp do właściciela; serwer weryfikuje token użytkownika. Nie wprowadzamy publicznego magazynu skanów sylwetek. Dla kont online wymagane będą procedury retencji, usuwania, praw dostępu, obsługa RODO i regulamin.
 
-1. Production-qualified sewing pattern system with notches, seam lines, grading, fabric tests and prototype approval.
-2. Dedicated Supabase instance, verified auth redirects, deletion/retention workflows, two-account cross-access tests.
-3. Verified Printify/Gelato catalog mapping and print areas per size, manufacturer approval, commercial terms.
-4. Separate FastAPI deployment, rate limiting, PDF job quotas, storage retention, monitoring and traceable tech-pack versions.
-5. Optional editorial AI imaging with opt-in, model/provider agreement, budget limits and clear synthetic-image labelling.
-
-### Current privacy design
-
-Names may be nicknames. Ages are optional and represented in months, not dates of birth. Guest session data never leaves the browser without deliberate user export or preparing a local mail draft. Never enable silent analytics on body or child measurements.
+## Standardy i źródła
+ISO 8559-1:2017 definiuje terminy i zasady antropometrii dla odzieży. Wyświetlany opis pomiarów jest własnym skróconym przewodnikiem, **nie** reprodukcją pełnego tekstu standardu ani certyfikatem zgodności. W UE dla dziecięcej odzieży należy ocenić bezpieczeństwo sznurków wg odpowiedniej wersji EN 14682. Dodatkowo obowiązują prawa konsumentów i informacja o składzie włókien przed sprzedażą.

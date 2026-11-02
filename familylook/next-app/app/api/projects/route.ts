@@ -1,6 +1,22 @@
 import {NextRequest,NextResponse} from 'next/server';
 import {createClient} from '@supabase/supabase-js';
-const config=()=>{const url=process.env.NEXT_PUBLIC_SUPABASE_URL;const anon=process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;return url&&anon?{url,anon}:null};
-async function userClient(req:NextRequest){const c=config();const token=req.headers.get('authorization')?.replace(/^Bearer /i,'');if(!c||!token)return null;const db=createClient(c.url,c.anon,{global:{headers:{Authorization:`Bearer ${token}`}},auth:{persistSession:false}});const {data:{user},error}=await db.auth.getUser(token);return user&&!error?{db,user}:null}
-export async function GET(req:NextRequest){const ctx=await userClient(req);if(!ctx)return NextResponse.json({error:'Wymagane logowanie do odrębnego konta FitMyStyle'},{status:401});const {data,error}=await ctx.db.from('family_projects').select('id,title,configuration,updated_at').eq('user_id',ctx.user.id).order('updated_at',{ascending:false}).limit(100);return error?NextResponse.json({error:'Błąd odczytu'},{status:500}):NextResponse.json({projects:data},{headers:{'Cache-Control':'no-store'}})}
-export async function POST(req:NextRequest){const ctx=await userClient(req);if(!ctx)return NextResponse.json({error:'Wymagane logowanie'},{status:401});let body:unknown;try{body=await req.json()}catch{return NextResponse.json({error:'Nieprawidłowy JSON'},{status:400})}const p=body as {name?:unknown;people?:unknown};if(!p||typeof p.name!=='string'||p.name.length>90||!Array.isArray(p.people)||p.people.length<1||p.people.length>12)return NextResponse.json({error:'Nieprawidłowy projekt'},{status:422});const {data,error}=await ctx.db.from('family_projects').insert({user_id:ctx.user.id,title:p.name,configuration:body}).select('id').single();return error?NextResponse.json({error:'Nie udało się zapisać'},{status:500}):NextResponse.json({id:data.id},{status:201})}
+import {safeConfig} from '@/lib/domain';
+import type {FamilyLookConfig} from '@/lib/types';
+export async function POST(req:NextRequest){
+ const url=process.env.NEXT_PUBLIC_SUPABASE_URL,anon=process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+ if(!url||!anon)return NextResponse.json({error:'Baza kont jest wyłączona.'},{status:503});
+ const auth=req.headers.get('authorization')||'';
+ if(!auth.startsWith('Bearer '))return NextResponse.json({error:'Wymagane logowanie.'},{status:401});
+ const token=auth.slice(7);
+ const db=createClient(url,anon,{global:{headers:{Authorization:`Bearer ${token}`}},auth:{persistSession:false,autoRefreshToken:false}});
+ const user=await db.auth.getUser(token);
+ if(user.error||!user.data.user)return NextResponse.json({error:'Sesja wygasła.'},{status:401});
+ try {
+   const raw=await req.text();
+   if(raw.length>450_000)return NextResponse.json({error:'Projekt jest zbyt duży.'},{status:413});
+   const config=safeConfig(JSON.parse(raw) as FamilyLookConfig);
+   const {data,error}=await db.from('familylook_projects').insert({owner_id:user.data.user.id,title:config.title,payload:config,schema_version:config.schemaVersion}).select('id,updated_at').single();
+   if(error)return NextResponse.json({error:'Nie udało się zapisać projektu.'},{status:400});
+   return NextResponse.json({ok:true,...data});
+ }catch{return NextResponse.json({error:'Nieprawidłowy format projektu.'},{status:400})}
+}

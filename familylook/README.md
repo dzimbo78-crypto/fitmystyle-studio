@@ -1,37 +1,36 @@
-# FitMyStyle — FamilyLook Studio / Tailor Edition
+# FitMyStyle — FamilyLook Studio 2.0 (Measurement Edition)
 
-A **new module** exclusively for `dzimbo78-crypto/fitmystyle-studio`. It shares no data, secrets, code or deployments with B-CORE or any other project.
+A fully isolated **module in `dzimbo78-crypto/fitmystyle-studio`**; the existing B-CORE and unrelated projects are not used. This release has a fully working browser configurator and tailoring technical pack, and includes modular React/Next.js/Supabase/FastAPI **starter code** for later account-based expansion.
 
-## Live-capable static module
+## Live standalone app
 
-`site/` is a self-contained, responsive web app with no paid external API:
-- Family builder for **1–12 people**: adult, child, infant; optional body-shape category and size label.
-- **13 step-by-step body measurement guides**, clickable silhouette indicator, validation and per-garment required measurements.
-- **20 original vector garment silhouettes**; coordinated colors, garment-specific fit/ease and optional print-text overlay.
-- Explicit **body measurement vs finished garment measurement** distinction.
-- Printable **A4 tailor Tech Pack** with one card per person, full measuring instructions, missing values, seam assumption, material and prototype review checklist.
-- JSON project export/import; guest `sessionStorage` privacy; local mail draft for admin, **no live order**.
+The directory `site/` is a zero-dependency static site. All guest projects and personal body measurements stay in `sessionStorage` until cleared or the tab's browser session ends; browser restore functionality can preserve a previous session. The app has no online database, checkout, or production dispatch. No third-party cookies or AI APIs are used.
 
-Run locally with `python -m http.server 8080 --directory site`, or use `FamilyLook_Studio_Atelier_OFFLINE.html`. Print-to-PDF from the UI. Example backend PDF at `examples/FamilyLook_TechPack_przyklad.pdf`.
+Launch locally in a web server with `python -m http.server --directory site 8080`, then open http://localhost:8080 (local machine). 
 
-## Optional backends
+### Key working features
+- 1–12 people; selectable Adult/Child/Infant, female/male/neutral body-shape configuration, independent garment and size per person.
+- 20 original editable SVG template shapes (not real purchasable SKUs) and 8 coordinated color palettes.
+- Independent front/back lettering and locally attached artwork layer (image stays in memory only).
+- 16 anthropometric measurement guides, highlight diagrams, cm validation, required fields by garment group, per-person progress and warnings.
+- **Technical pack** print-to-PDF with a distinct page for each person, measured values, provisional garment targets, ease, print zone and sign-off fields. Also HTML, JSON and CSV exports.
+- Downloadable measurement instructions `site/instrukcja-pomiarow.pdf` and `site/pomiar-przewodnik.html`.
 
-- `next-app/`: React 19, Next.js 16, Tailwind 4, TypeScript components, optional Supabase Auth and private saves. Not live or validated by a full Next.js dependency build yet.
-- `sql/001_familylook.sql`: independent Supabase database with per-owner row-level security. Do not apply to any existing project.
-- `fastapi/`: standalone PDF generator, draft provider mapping and explicit 503 fallback for unconfigured AI. No payment or production dispatch.
+## Intended workflow for tailors
 
-## Test
+Measure body → choose garment and fabric → add preliminary ease → create draft tech pack → pattern maker confirms pattern/drape/material shrinkage/production tolerances → fit sample → approve final technical documents and size chart → ONLY THEN consider placing an order. The app never implies that it already produces an approved sewing pattern.
 
-```bash
-node --test tests/*.test.mjs
-cd fastapi && pytest -q
-python tools/build-offline.py
-```
+## Validation
+- `node --test tests/domain.test.mjs` — 10 domain tests.
+- `python tests/browser_smoke.py` — Playwright tests without external navigation, desktop/mobile, guest profiles, measurement independence, mockup, exports, JS errors.
+- `cd fastapi && pytest -q` — 2 optional FastAPI fallback tests.
+- Example print: `example-tailor-pack.pdf` (sample with intentionally missing fields).
 
-A browser smoke test can be run using Playwright Chromium against the self-contained offline HTML. Test measurement entry, family count, gallery, technical cards, PDF and empty-field warnings.
+## Next.js + Supabase (optional, not connected)
+`next-app` contains typed TS domain, family member/measurement components, protected save route, and Supabase client bootstrap. Deploy ONLY after creating a **new dedicated** FitMyStyle Supabase project and applying `sql/001_familylook_measurements.sql`; RLS enforces account ownership. The Next app is a scaffold, **not** the currently deployed static site, and its package install/typecheck/build has not been verified in this sandbox.
 
-## Safe scope / manufacturing status
+## Optional FastAPI
+`fastapi/` returns 503 for image rendering by design because no real provider account/token is configured. The static SVG composition remains functional with no AI charges.
 
-This is a professional **measurement capture, planning and documentation** layer, **not** production-certified CAD. Fit allowances are initial assumptions, not standardized sizing or validated patterns. A qualified pattern maker must approve templates and sew test garments. Real product availability, purchase, checkout, and manufacturer dispatch are not active.
-
-See `docs/POMIARY_I_PRODUKCJA.md` and `docs/ARCHITECTURE.md`.
+## Privacy, copyright and children
+Avoid photos and excessive personal measurement data. Drawstrings/cords on children's clothes require appropriate review under EN 14682. Measurement descriptions are our own simplified guide, informed by the scope of ISO 8559-1; not a certified replacement for that standard. Template drawings, textile colors and sample lifestyle image are creative/editorial demonstrations, not live sales offers.
