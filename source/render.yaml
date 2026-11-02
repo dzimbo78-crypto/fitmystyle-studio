@@ -1,0 +1,21 @@
+# FitMyStyle ONLY. New independent service, never connect any existing repository/service.
+services:
+  - type: web
+    name: fitmystyle-v8-independent
+    runtime: static
+    buildCommand: node --test tests/*.test.mjs && node scripts/build.mjs
+    staticPublishPath: ./dist
+    branch: main
+    headers:
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: Permissions-Policy
+        value: camera=(), microphone=(), geolocation=()

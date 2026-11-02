@@ -1,0 +1,16 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {DESIGN_LIBRARY,DEFAULT_MEASUREMENTS,draftPattern,renderPatternSVG,validateMeasurements,offsetPolygon,techPack,getDefaultsForDesign} from '../src/patterns.mjs';
+import {exportTiledA4Pdf} from '../src/pdf.mjs';
+test('library contains 44 catalogued configurable pattern presets and 8 drafting families',()=>assert.equal(DESIGN_LIBRARY.length,44));
+test('all presets produce usable finite geometry',()=>{for(const d of DESIGN_LIBRARY){const p=draftPattern(DEFAULT_MEASUREMENTS,{designId:d.id});assert.ok(p.pieces.length>=2,d.id);assert.ok(p.width>0&&p.height>0,d.id);for(const piece of p.pieces){assert.ok(piece.cut.length>=4,d.id);assert.ok(piece.cut.flat().every(Number.isFinite),d.id);}}});
+test('measurement input errors are reported',()=>assert.throws(()=>validateMeasurements({...DEFAULT_MEASUREMENTS,bust:0}),/biust/));
+test('changing sleeve length changes sleeve piece dimensions',()=>{const base=getDefaultsForDesign('shirt-classic');const a=draftPattern(DEFAULT_MEASUREMENTS,{...base,sleeveLength:22}),b=draftPattern(DEFAULT_MEASUREMENTS,{...base,sleeveLength:62});assert.ok(b.pieces.find(p=>p.name.startsWith('Rękaw')).height>a.pieces.find(p=>p.name.startsWith('Rękaw')).height)});
+test('SVG has physical mm dimensions, cut and sew lines and escaped labels',()=>{const x=renderPatternSVG(draftPattern(DEFAULT_MEASUREMENTS,{designId:'hoodie-hood'}));assert.match(x,/width="[\d.]+mm"/);assert.match(x,/stroke-dasharray/);assert.match(x,/KONTROLA: 50 mm/)});
+test('PDF is valid vector PDF with several A4 pages',()=>{const x=exportTiledA4Pdf(draftPattern(DEFAULT_MEASUREMENTS,{designId:'shirt-classic'}));const s=new TextDecoder().decode(x.bytes);assert.match(s,/^%PDF-1\.4/);assert.match(s,/%%EOF$/);assert.match(s,/xref/);assert.equal((s.match(/\/Type \/Page /g)||[]).length,x.pages);assert.ok(x.pages>=4);assert.ok(x.pages<80);});
+test('draft tech pack clearly identifies fit-test status',()=>{const pack=techPack(draftPattern(DEFAULT_MEASUREMENTS,{designId:'top-classic'}));assert.match(pack.status,/PROTOTYPE/);assert.ok(pack.billOfPieces.length>=2)});
+test('invalid allowance and optional output rejected',()=>assert.throws(()=>draftPattern(DEFAULT_MEASUREMENTS,{designId:'top-classic',seamAllowance:100}),/Parametr/));
+test('convex rectangle expanded when adding seam allowance',()=>{const p=[[0,0],[100,0],[100,50],[0,50]];let out=offsetPolygon(p,10);assert.ok(Math.min(...out.map(x=>x[0]))<0);assert.ok(Math.max(...out.map(x=>x[0]))>100);});
+import {interpretPatternRequest} from '../src/patterns.mjs';
+test('local command interpreter handles shirt and measured sleeve and length',()=>{const p=interpretPatternRequest('koszula rękaw 40 cm, długość 72 cm, luz 14 cm');assert.equal(p.options.designId,'shirt-classic');assert.equal(p.options.sleeveLength,40);assert.equal(p.options.length,72);assert.equal(p.options.ease,14)});
+test('local command interpreter admits not understanding arbitrary requests',()=>assert.equal(interpretPatternRequest('plisowany kołnierz stand-up haute couture').recognized,false));
+test('measurements for sample child are supported',()=>{const x={height:120,bust:62,waist:57,hip:66,shoulder:30,neck:29,bicep:21,wrist:13,arm:41,inseam:53,back:29,head:51};const y=draftPattern(x,{designId:'shirt-mini'});assert.ok(y.pieces.length>0)});

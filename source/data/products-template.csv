@@ -1,0 +1,4 @@
+<PARSED TEXT FOR SHEET: 1 / 1 TABS
+TAB NAME: pkg__data__products-template.csv>
+index,id,name,role,style,color,price,palette,size,source,sourceUrl,sku,description,shipping,stock,currency,imageUrl
+0,EXAMPLE-M-001,Example linen shirt,man,holiday,cream,49,sand,L,EXAMPLE ONLY,https://example.org/product-not-real,EXAMPLE-M-001,Replace with authorized product feed,,,EUR,

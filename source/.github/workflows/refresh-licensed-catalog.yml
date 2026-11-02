@@ -1,0 +1,28 @@
+name: Refresh licensed FitMyStyle catalog
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 4 * * 0'  # Weekly on Sunday, UTC
+permissions:
+  contents: write
+jobs:
+  sync:
+    if: github.repository != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Update only explicitly licensed partner feed snapshots
+        run: node scripts/sync-licensed-feeds.mjs
+      - name: Test catalog and application
+        run: node --test tests/*.test.mjs
+      - name: Commit changed snapshot (new FitMyStyle repository only)
+        run: |
+          git diff --quiet -- data/catalog-public.json && exit 0
+          git config user.name "fitmystyle-feed-bot"
+          git config user.email "fitmystyle-feed-bot@users.noreply.github.com"
+          git add data/catalog-public.json
+          git commit -m "Refresh approved partner product catalog"
+          git push

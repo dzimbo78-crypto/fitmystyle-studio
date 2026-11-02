@@ -1,0 +1,17 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {makeWardrobeItem,validateWardrobe,wardrobeStats,sizeGuide} from '../src/wardrobe.mjs';
+import {recommendPro,prepareShoppingPlan,eligibility} from '../src/stylist-pro.mjs';
+import {generateDemoProducts} from '../src/core.mjs';
+const own=()=>makeWardrobeItem({id:'own-shirt-1',ownerId:'adult-1',role:'woman',name:'Sage linen blouse',color:'sage',style:'everyday',size:'M'});
+test('wardrobe item is owned and zero purchase cost',()=>{const p=own();assert.equal(p.status,'owned');assert.equal(p.price,0);assert.equal(p.shipping,0);assert.equal(p.ownerId,'adult-1')});
+test('wardrobe rejects invalid owner',()=>assert.throws(()=>makeWardrobeItem({ownerId:'other-project',role:'woman',name:'Top',color:'sage',style:'everyday',size:'M'})));
+test('wardrobe rejects unsupported sizes and colors',()=>assert.throws(()=>makeWardrobeItem({ownerId:'adult-1',role:'woman',name:'Top',color:'neon-plaid',style:'everyday',size:'M'})));
+test('wardrobe uses exact person matching',()=>{const p=own();assert.equal(eligibility(p,{id:'adult-1',role:'woman',size:'M'}),true);assert.equal(eligibility(p,{id:'adult-2',role:'woman',size:'M'}),false)});
+test('wardrobe respects declared size',()=>{const p=own();assert.equal(eligibility(p,{id:'adult-1',role:'woman',size:'L'}),false)});
+test('wardrobe blocks duplicate IDs',()=>assert.throws(()=>validateWardrobe([own(),own()])));
+test('wardrobe reports owner counts',()=>{const s=wardrobeStats([own()]);assert.equal(s.total,1);assert.equal(s.byOwner['adult-1'],1)});
+test('size guide gives an explicit non-brand estimate',()=>{const r=sizeGuide({role:'woman',chest:92,waist:80,hips:99,height:170});assert.ok(r.size);assert.equal(r.confidence,'orientational')});
+test('child size estimate uses height',()=>{const r=sizeGuide({role:'child',chest:60,waist:56,hips:64,height:104});assert.equal(r.size,'4Y')});
+test('size guide rejects unsafe values',()=>assert.throws(()=>sizeGuide({role:'woman',chest:0,waist:80,hips:90,height:170})));
+test('owned items never become purchasable orders',()=>{const member={id:'adult-1',role:'woman',label:'Mum',size:'M'},product=own();const plan=prepareShoppingPlan({items:[{member,product}],total:0});assert.equal(plan.groups.length,0);assert.equal(plan.unavailable.length,0);assert.equal(plan.owned.length,1)});
+test('recommendation can pick owned clothing without multiplying catalog price',()=>{const member={id:'adult-1',role:'woman',label:'Mum',size:'M'};const res=recommendPro({members:[member],style:'everyday',palette:'sage',budget:100,count:3,seed:2},[own(),...generateDemoProducts()]);assert.equal(res[0].complete,true);assert.ok(res.some(l=>l.items[0].product.status==='owned'))});

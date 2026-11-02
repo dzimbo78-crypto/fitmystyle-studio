@@ -1,0 +1,12 @@
+/** Standalone offline preview: self-contained HTML without external scripts. */
+import {readFile,writeFile} from 'node:fs/promises';import path from 'node:path';import {fileURLToPath} from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');if(path.basename(root)!=='FitMyStyle_Studio_8')throw Error('Standalone-only guard');
+const cache=new Map();
+async function dataModule(file){const resolved=path.resolve(root,file);if(!resolved.startsWith(root+path.sep)||!resolved.endsWith('.mjs'))throw Error('Unsafe import');if(cache.has(resolved))return cache.get(resolved);
+ let code=await readFile(resolved,'utf8');const imports=[...code.matchAll(/(from\s+['"])(\.\.?\/[^'"]+)(['"])/g)];for(const m of [...imports].reverse()){const mod=await dataModule(path.relative(root,path.resolve(path.dirname(resolved),m[2])));code=code.slice(0,m.index)+m[1]+mod+m[3]+code.slice(m.index+m[0].length)}const uri='data:text/javascript;base64,'+Buffer.from(code).toString('base64');cache.set(resolved,uri);return uri;}
+let html=await readFile(root+'/index.html','utf8');html=html.replace(/<meta http-equiv="Content-Security-Policy"[^>]*>/,'').replace(/<link rel="manifest"[^>]*>/,'').replace(/<link rel="icon"[^>]*>/,'');
+for(const css of ['src/landing.css','src/styles.css']){const data=await readFile(root+'/'+css,'utf8');html=html.replace(new RegExp(`<link rel="stylesheet" href="\\./${css.replaceAll('/','\\/')}">`),`<style>${data}</style>`)}
+for(const file of ['src/app.mjs','src/site.mjs']){const uri=await dataModule(file);html=html.replace(`<script type="module" src="./${file}"></script>`,`<script type="module" src="${uri}"></script>`)}
+const photo=await readFile(root+'/hero-family.webp');const logo=await readFile(root+'/icon.svg');const hanger=await readFile(root+'/brand-hanger.svg');html=html.replaceAll('./hero-family.webp','data:image/webp;base64,'+photo.toString('base64')).replaceAll('./icon.svg','data:image/svg+xml;base64,'+logo.toString('base64')).replaceAll('./brand-hanger.svg','data:image/svg+xml;base64,'+hanger.toString('base64'));
+for(const type of ['feature','look'])for(let i=1;i<=(type==='feature'?6:5);i++){const name=`${type}-${i}.webp`,blob=await readFile(root+'/media/'+name);html=html.replaceAll('./media/'+name,'data:image/webp;base64,'+blob.toString('base64'))}
+html=html.replace('</head>','<meta name="referrer" content="no-referrer"></head>');await writeFile(root+'/FitMyStyle_Studio_8_OFFLINE.html',html);console.log('Offline file generated',Buffer.byteLength(html),'bytes',cache.size,'modules');

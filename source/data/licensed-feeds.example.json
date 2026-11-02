@@ -1,0 +1,4 @@
+{
+  "comment": "ONLY supplier/affiliate feeds explicitly licensed to FitMyStyle. Copy as licensed-feeds.json when permission is documented. Never commit tokens or passwords.",
+  "sources": []
+}
