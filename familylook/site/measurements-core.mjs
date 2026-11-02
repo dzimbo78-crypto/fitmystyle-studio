@@ -1,0 +1,79 @@
+/* FitMyStyle / FamilyLook Tailor Studio — independently authored measurement engine.
+   Values in centimetres; ISO 8559-1 referenced conceptually, not claimed certified.
+   Never silently substitute missing body measurements with size-chart averages. */
+export const SCHEMA='fitmystyle-tailor-pack-v1';
+export const MAX_MEMBERS=8;
+export const PERSON_TYPES={adultF:'Dorosła · fason damski',adultM:'Dorosły · fason męski',child:'Dziecko',baby:'Niemowlę'};
+export const GARMENTS={
+ tshirt:{label:'T-shirt / jersey',category:'upper',kind:'stretch',construction:'Szew ramieniowy i boczny; dekolt z lamówką lub ściągaczem; podwinięty dół.'},
+ hoodie:{label:'Bluza z kapturem',category:'upper',kind:'stretch',construction:'Łączenie ramion, rękawów i kaptura; ściągacze; opcjonalna kieszeń kangurka.'},
+ crewneck:{label:'Bluza bez kaptura',category:'upper',kind:'stretch',construction:'Dekolt rib, ściągacze rękawów i dołu, szwy dopasowane do dzianiny.'},
+ sweater:{label:'Sweter dzianinowy',category:'upper',kind:'stretch',construction:'Łączenie elementów dzianiny z zachowaniem elastyczności; stabilizacja linii barku.'},
+ shirt:{label:'Koszula tkana',category:'upper',kind:'woven',construction:'Kołnierz i stójka, plisa zapięcia, mankiety i karczek; właściwe zapasy na szwy.'},
+ trousers:{label:'Spodnie / joggery',category:'lower',kind:'stretch',construction:'Pas, szew krokowy, nogawki; pomiar długości wewnętrznej nogawki przed odszyciem.'},
+ dress:{label:'Sukienka',category:'dress',kind:'woven',construction:'Oznacz linię talii, szerokość dołu, zaszewki według przymiarki; zamek tylko wg projektu.'},
+ bodysuit:{label:'Body niemowlęce',category:'baby',kind:'stretch',construction:'Miękkie płaskie szwy, bez luźnych elementów; zapięcie bezpieczne i przetestowane.'}
+};
+export const MATERIALS={
+ cotton_jersey:{label:'Jersey bawełniany',stretch:true,typical:['tshirt','bodysuit','dress'],note:'Rzeczywisty procent rozciągliwości i wykurcz materiału potwierdzić próbą.'},
+ french_terry:{label:'French terry / dresówka',stretch:true,typical:['hoodie','crewneck','trousers'],note:'Szyj ściegiem elastycznym; gramatura i stabilność wymagają próby.'},
+ fleece:{label:'Dzianina drapana',stretch:true,typical:['hoodie','crewneck','trousers'],note:'Kontrola kierunku włosa, mięsistości i kurczliwości.'},
+ merino:{label:'Dzianina merino',stretch:true,typical:['sweater'],note:'Rozciąganie zależne od splotu; delikatne wykańczanie i stabilizacja.'},
+ poplin:{label:'Popelina bawełniana',stretch:false,typical:['shirt','dress'],note:'Brak istotnego rozciągania; zaplanuj luz ruchowy i kurczliwość.'},
+ linen:{label:'Len tkany',stretch:false,typical:['shirt','dress'],note:'Wykurcz i gniecenie; wymagane pranie próbki przed finalnym krojeniem.'}
+};
+export const FIELDS=[
+ {id:'height',label:'Wzrost',abbr:'A',region:'full',method:'Stań boso, pięty przy ścianie, głowa prosto. Zmierz pionowo od podłogi do czubka głowy.',tip:'Nie wyliczaj wzrostu z rozmiaru odzieży.',min:45,max:220},
+ {id:'neck',label:'Obwód szyi',abbr:'B',region:'neck',method:'Owiń miarkę przy podstawie szyi bez zaciskania; zostaw miejsce na swobodny oddech.',tip:'Nie mierz po kołnierzu starej koszuli.',min:17,max:65},
+ {id:'chest',label:'Obwód klatki / biustu',abbr:'C',region:'chest',method:'Miarka poziomo wokół najszerszego miejsca klatki lub biustu, przez łopatki. Ręce luźno, normalny wydech.',tip:'Mierz po cienkiej odzieży lub bieliźnie noszonej z projektem.',min:28,max:180},
+ {id:'underbust',label:'Obwód pod biustem',abbr:'D',region:'underbust',method:'Miarka bezpośrednio pod biustem, poziomo wokół tułowia, bez ściskania.',tip:'Dotyczy głównie krojów dopasowanych.',min:45,max:150},
+ {id:'waist',label:'Obwód talii naturalnej',abbr:'E',region:'waist',method:'Owiń miarkę w naturalnym przewężeniu talii, zwykle między dolnym żebrem a górą kości biodrowej. Nie wciągaj brzucha.',tip:'Zaznacz talię cienką tasiemką, aby pozostałe długości miały ten sam punkt odniesienia.',min:28,max:180},
+ {id:'hip',label:'Obwód bioder',abbr:'F',region:'hip',method:'Mierz poziomo w najszerszym miejscu bioder i pośladków, z nogami ustawionymi blisko siebie.',tip:'Miarka powinna przechodzić przez najbardziej wystający punkt pośladków.',min:32,max:190},
+ {id:'shoulder',label:'Szerokość barków',abbr:'G',region:'shoulder',method:'Na plecach zmierz od punktu barkowego jednej ręki do punktu barkowego drugiej, po naturalnej linii pleców.',tip:'Nie licz szerokości rękawów ubrań jako szerokości ciała.',min:16,max:68},
+ {id:'backLength',label:'Długość pleców do talii',abbr:'H',region:'back',method:'Od wyraźnego punktu karkowego (C7) pionowo wzdłuż pleców do zaznaczonej naturalnej talii.',tip:'Pomoc drugiej osoby zwiększa wiarygodność wyniku.',min:12,max:70},
+ {id:'sleeve',label:'Długość rękawa',abbr:'I',region:'sleeve',method:'Od punktu barkowego wzdłuż lekko zgiętego łokcia do kostki nadgarstka.',tip:'Dla rękawa raglanowego wymagany jest osobny pomiar od szyi — oznacz w uwagach.',min:12,max:100},
+ {id:'bicep',label:'Obwód ramienia',abbr:'J',region:'bicep',method:'Zmierz najszerszą część ramienia przy rozluźnionych mięśniach.',tip:'Uważaj, by nie zawyżyć pomiaru przez zaciśniętą taśmę.',min:10,max:70},
+ {id:'wrist',label:'Obwód nadgarstka',abbr:'K',region:'wrist',method:'Miarka wokół nadgarstka tuż nad kostkami; bez zaciskania.',tip:'W mankietach z zapięciem przewidź dodatkowy luz.',min:7,max:34},
+ {id:'inseam',label:'Długość nogawki wewnętrznej',abbr:'L',region:'inseam',method:'Od punktu kroku wzdłuż wewnętrznej strony nogi do planowanego końca nogawki, stojąc w naturalnej pozycji.',tip:'Nie licz tej długości od pasa.',min:12,max:110},
+ {id:'outseam',label:'Długość nogawki zewnętrznej',abbr:'M',region:'outseam',method:'Od bocznej linii talii do wybranego dołu nogawki przy zachowanej naturalnej talii.',tip:'Zaznacz punkt talii wcześniej.',min:22,max:145},
+ {id:'thigh',label:'Obwód uda',abbr:'N',region:'thigh',method:'Zmierz najszerszy obwód uda, zwykle tuż pod krokiem.',tip:'Stań z równomiernym rozłożeniem ciężaru ciała.',min:14,max:110},
+ {id:'crotch',label:'Długość stanu całkowita',abbr:'O',region:'crotch',method:'Przeprowadź miarkę od przedniej talii przez krocze do tylnej talii. Bez nadmiernego naprężania.',tip:'Nie myl z samą wysokością stanu spodni.',min:20,max:105},
+ {id:'head',label:'Obwód głowy',abbr:'P',region:'head',method:'Po najszerszej części głowy, przez czoło nad brwiami i najszerszą część potylicy.',tip:'Stosuj tylko przy nakryciach głowy, nie zastępuje wzrostu.',min:28,max:68},
+ {id:'torso',label:'Długość tułowia body',abbr:'Q',region:'torso',method:'Od punktu barkowego z przodu, przez krok, do tego samego punktu na plecach; mierzyć delikatnie.',tip:'Niezbędny przy dopasowanym body; niemowlęcia nie unosimy za miarkę.',min:30,max:140}
+];
+export const FIELD_BY_ID=Object.fromEntries(FIELDS.map(x=>[x.id,x]));
+export const MEASUREMENT_GROUPS={
+ upper:{required:['height','chest','shoulder','backLength','sleeve'],optional:['neck','waist','hip','bicep','wrist','underbust']},
+ lower:{required:['height','waist','hip','inseam','thigh'],optional:['outseam','crotch']},
+ dress:{required:['height','chest','waist','hip','shoulder','backLength'],optional:['sleeve','neck','underbust']},
+ baby:{required:['height','chest','torso'],optional:['waist','hip','sleeve','neck','head']}
+};
+export const PERSON_DEFAULTS={adultF:{name:'Mama',size:'S',garment:'crewneck'},adultM:{name:'Tata',size:'M',garment:'hoodie'},child:{name:'Dziecko',size:'110',garment:'tshirt'},baby:{name:'Niemowlę',size:'68',garment:'bodysuit'}};
+export const SUITABLE_GARMENTS={adultF:['tshirt','hoodie','crewneck','sweater','shirt','trousers','dress'],adultM:['tshirt','hoodie','crewneck','sweater','shirt','trousers'],child:['tshirt','hoodie','crewneck','sweater','shirt','trousers','dress'],baby:['bodysuit','tshirt','crewneck']};
+export const EASE_CM={
+ tshirt:{slim:2,regular:6,relaxed:10,oversize:16},hoodie:{slim:8,regular:12,relaxed:17,oversize:23},
+ crewneck:{slim:6,regular:11,relaxed:16,oversize:22},sweater:{slim:3,regular:8,relaxed:14,oversize:20},
+ shirt:{slim:7,regular:11,relaxed:16,oversize:22},trousers:{slim:2,regular:5,relaxed:8,oversize:12},
+ dress:{slim:4,regular:9,relaxed:14,oversize:22},bodysuit:{slim:2,regular:4,relaxed:6,oversize:8}
+};
+export const ROLES=['adultF','adultM','child','baby'];
+export const round1=n=>Math.round(n*10)/10;
+export const sanitizeName=s=>String(s??'').trim().replace(/[<>\u0000-\u001f]/g,'').slice(0,55);
+export const escapeHtml=s=>String(s??'').replace(/[&<>"']/g,k=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[k]));
+export function newPerson(type='adultF',id){if(!PERSON_TYPES[type])throw new Error('Nieznany typ osoby');const d=PERSON_DEFAULTS[type];return {id:id||'p-'+Math.random().toString(36).slice(2,10),name:d.name,type,fitPreference:type==='child'||type==='baby'?'neutral':'default',garment:d.garment,sourceSize:d.size,material:d.garment==='shirt'?'poplin':'cotton_jersey',fit:'regular',seamAllowanceCm:1,hemAllowanceCm:2.5,preferredGarmentLengthCm:null,additionalEaseCm:0,measurements:{},notes:'',reviewStatus:'draft',consentForTransfer:false}};
+export function normalizePerson(input){if(!input||!PERSON_TYPES[input.type])throw new Error('Niepoprawny typ członka rodziny');const d=newPerson(input.type,String(input.id||'').slice(0,45)||undefined);const raw=input.measurements&&typeof input.measurements==='object'?input.measurements:{};for(const f of FIELDS){const v=raw[f.id];if(v!==null&&v!==undefined&&v!==''){
+const n=Number(v);if(Number.isFinite(n))d.measurements[f.id]=round1(n);}}
+const garment=SUITABLE_GARMENTS[d.type].includes(input.garment)?input.garment:d.garment;return {...d,name:sanitizeName(input.name)||d.name,garment,sourceSize:String(input.sourceSize||d.sourceSize).slice(0,12),fit:['slim','regular','relaxed','oversize'].includes(input.fit)?input.fit:'regular',material:MATERIALS[input.material]?input.material:d.material,additionalEaseCm:bounded(input.additionalEaseCm,-5,15,0),seamAllowanceCm:bounded(input.seamAllowanceCm,0.5,3,1),hemAllowanceCm:bounded(input.hemAllowanceCm,0.5,7,2.5),preferredGarmentLengthCm:input.preferredGarmentLengthCm==null?null:bounded(input.preferredGarmentLengthCm,15,150,null),notes:String(input.notes||'').slice(0,1500),measurements:d.measurements,consentForTransfer:input.consentForTransfer===true,reviewStatus:'draft'};}
+function bounded(v,min,max,fallback){if(v===''||v===null||v===undefined)return fallback;const n=Number(v);return Number.isFinite(n)&&n>=min&&n<=max?round1(n):fallback;}
+export function relevantMeasurements(person){const group=MEASUREMENT_GROUPS[GARMENTS[person.garment]?.category||'upper'];const common=person.type==='baby'&&person.garment!=='bodysuit'?MEASUREMENT_GROUPS.upper:group;return {required:common.required.filter(id=>!(person.type==='baby'&&id==='shoulder')),optional:common.optional.filter(x=>!common.required.includes(x))};}
+export function validatePerson(person){const issues=[], warnings=[];if(!PERSON_TYPES[person.type])issues.push('Nieprawidłowy typ osoby');if(!SUITABLE_GARMENTS[person.type]?.includes(person.garment))issues.push('Nieodpowiedni fason dla wybranej grupy');const rel=relevantMeasurements(person),values=person.measurements||{};for(const f of FIELDS){const v=values[f.id];if(v==null||v==='')continue;const n=Number(v);if(!Number.isFinite(n)||n<=0){issues.push(f.label+': wpisz dodatnią liczbę');continue}if(n<f.min||n>f.max)warnings.push(f.label+': wynik poza zakresem orientacyjnym — zmierz ponownie');}
+for(const id of rel.required){if(!Number.isFinite(Number(values[id]))||values[id]==null||values[id]==='')issues.push('Brakuje pomiaru: '+FIELD_BY_ID[id].label)}
+if(Number(values.waist)>Number(values.hip)*1.9&&values.hip!=null)warnings.push('Talia bardzo duża względem bioder — zweryfikuj poziom pomiaru');
+if(person.type==='baby'&&['hoodie','shirt','trousers'].includes(person.garment))issues.push('Fason niedostępny dla niemowląt');
+if(person.type==='baby'||person.type==='child')warnings.push('Odzież dziecięca: sprawdź bezpieczeństwo małych elementów, sznurków i zapięć.');
+if(person.garment==='shirt'&&MATERIALS[person.material]?.stretch)warnings.push('Wybrana dzianina zamiast typowej tkaniny koszulowej — konstrukcja do zatwierdzenia.');
+if(person.garment==='sweater'&&!MATERIALS[person.material]?.stretch)warnings.push('Sweter z tkaniny bez rozciągania — zmień materiał lub konstrukcję.');
+return {ready:issues.length===0,issues,warnings,complete:Math.max(0,rel.required.length-issues.filter(x=>x.startsWith('Brakuje pomiaru:')).length),required:rel.required.length};}
+export function estimateGarment(person){const chest=Number(person.measurements.chest),waist=Number(person.measurements.waist),hip=Number(person.measurements.hip);const ease=round1((EASE_CM[person.garment]?.[person.fit]??6)+(Number(person.additionalEaseCm)||0));const garment=GARMENTS[person.garment];const measurementKind=garment?.category==='lower'?'waist':garment?.category==='dress'?'chest':'chest';const value=measurementKind==='waist'?waist:chest;const result={measurementKind,bodyBaseCm:Number.isFinite(value)&&value>0?round1(value):null,easeCm:ease,finishedCircumferenceCm:Number.isFinite(value)&&value>0?round1(value+ease):null,finishedHipCm:Number.isFinite(hip)&&hip>0?round1(hip+(garment?.category==='lower'?ease:Math.max(ease,4))):null,desiredLengthCm:person.preferredGarmentLengthCm??null,seamAllowanceCm:person.seamAllowanceCm,hemAllowanceCm:person.hemAllowanceCm,method:'Design starting point; confirm with garment block, graded pattern, test sample and fitting.'};return result;}
+export function buildTechPack(person,{projectId='GUEST',version='1.0',createdAt=new Date().toISOString(),palette='neutral',artwork=null}={}){const p=normalizePerson(person),check=validatePerson(p),size=estimateGarment(p);return {schema:SCHEMA,documentType:'TECHNICAL_DRAFT_NOT_PRODUCTION_APPROVAL',projectId,version,createdAt,person:{id:p.id,name:p.name,type:p.type,role:PERSON_TYPES[p.type],sizeLabel:p.sourceSize},garment:{id:p.garment,name:GARMENTS[p.garment].label,material:MATERIALS[p.material].label,fit:p.fit,palette,construction:GARMENTS[p.garment].construction,measurementsTarget:size},bodyMeasurementsCm:{...p.measurements},requiredMeasurements:relevantMeasurements(p).required,optionalMeasurements:relevantMeasurements(p).optional,artwork:artwork||{status:'not-provided'},review:{status:'requires-human-review',missing:check.issues,warnings:check.warnings,fitTrialRequired:true,patternValidated:false},notes:p.notes,manufacturing:{patternStatus:'not-generated',gradingStatus:'not-verified',fabricShrinkage:'not-tested',seamAllowanceCm:p.seamAllowanceCm,hemAllowanceCm:p.hemAllowanceCm,approval:{patternMaker:'',sampleCheckedAt:'',approvedBy:''}},privacy:{containsBodyMeasurements:true,sharingAuthorized:p.consentForTransfer===true,sendToManufacturer:false}};}
+export function buildFamilyPack(persons,options={}){if(!Array.isArray(persons)||persons.length<1||persons.length>8)throw new Error('Wybierz od 1 do 8 osób');const ids=new Set();const packets=persons.map(p=>{if(ids.has(p.id))throw Error('Powtórzony identyfikator');ids.add(p.id);return buildTechPack(p,options)});return {schema:'fitmystyle-family-tailor-bundle-v1',generatedAt:new Date().toISOString(),status:'review-only',people:packets,readyForReview:packets.filter(p=>p.review.missing.length===0).length,readyForProduction:0,warning:'To szkic techniczny z wymiarów ciała, NIE wykrój krawiecki ani pozwolenie na produkcję. Wymaga konstrukcji, prototypu i przymiarki.'};}
