@@ -1,0 +1,8 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {calculateGarment,getTechnicalPack,FABRICS,GARMENT_TYPES} from '../src/garment-engine.mjs';
+test('all clothing presets and fabrics are valid',()=>{for(const [type,x] of Object.entries(GARMENT_TYPES)){assert.ok(FABRICS[x.material]);assert.equal(calculateGarment({cut:type}).type,type)}});
+test('garment dimensions are body plus ease, never seam allowance',()=>{let x=calculateGarment({body:'man',chest:100,waist:80,hip:99,fit:'relaxed'});assert.equal(x.garment.chest,117);assert.equal(x.garment.waist,94);assert.equal(x.body.chest,100)});
+test('body measurements are validated to safe numeric intervals',()=>{let x=calculateGarment({chest:999,waist:-1,height:0});assert.equal(x.body.chest,160);assert.equal(x.body.waist,40);assert.equal(x.body.height,80)});
+test('sleeve choices change sleeve cm deterministically',()=>{const a=calculateGarment({cut:'shirt',sleeve:'short'}),b=calculateGarment({cut:'shirt',sleeve:'long'});assert.ok(a.sleeveCm<b.sleeveCm)});
+test('technical pack explicitly disclaims approval',()=>{let x=getTechnicalPack({cut:'hoodie',body:'child'});assert.equal(x.productionStatus,'NOT_APPROVED');assert.ok(x.warnings.length);assert.equal(x.measureUnit,'cm')});
+test('slim cut with poplin warns about movement',()=>{const x=calculateGarment({cut:'shirt',fit:'slim',fabric:'poplin'});assert.match(x.warnings.join(' '),/ruchów/)});

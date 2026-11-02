@@ -32,3 +32,37 @@ body{margin:0}
 .public-footer button#footer-session-reset:hover,.public-footer button#footer-session-export:hover{background:#e1c79b22}
 .top-session-reset{margin-left:auto;font:inherit;font-size:11px;white-space:nowrap;cursor:pointer;border:1px solid #dacbaa;border-radius:10px;padding:7px 10px;color:#66543f;background:#fffaf1}
 @media(max-width:680px){.top-session-reset{font-size:10px;padding:6px}.public-footer{gap:10px;flex-wrap:wrap}}
+
+/* FitMyStyle 9.0 unified surface: persistent storefront header on ALL studio screens. */
+.public-site.studio-mode>.public-hero,.public-site.studio-mode>.public-feature-track,.public-site.studio-mode>.public-quick,.public-site.studio-mode>.public-metrics,.public-site.studio-mode>.public-partners,.public-site.studio-mode>.public-live-studio{display:none!important}
+.public-site.studio-mode #fms-app-shell{display:block!important;max-width:none;width:100%;min-height:65vh;margin:0;padding:0;background:#f6f3ed;color:#292724}
+.public-site.studio-mode #fms-app-shell .sidebar{display:none!important}
+.public-site.studio-mode #fms-app-shell .main-area{width:100%;max-width:none;margin:0;padding:0;background:#f6f3ed;color:#292724}
+.public-site.studio-mode #fms-app-shell .topbar{background:#fff9f2;border-bottom:1px solid #e9e0d3;box-shadow:none;padding:14px 4vw;color:#4b4032}
+.public-site.studio-mode #fms-app-shell .page{max-width:1480px;margin:0 auto;padding:16px clamp(16px,3vw,40px) 65px}
+.public-site.studio-mode #fms-app-shell .page:not(.active-page){display:none!important}
+.public-site.studio-mode #fms-app-shell .footer{max-width:none;padding:13px 25px}
+.public-site.studio-mode .public-nav{position:sticky;top:0;z-index:100;box-shadow:0 3px 19px #0002}
+.public-live-studio{background:#ede7e0;display:grid;grid-template-columns:minmax(270px,.8fr) minmax(350px,1.3fr);gap:22px;padding:23px 28px;border-radius:25px;margin:14px 16px 18px;color:#292522}
+.public-live-intro .live-eyebrow{font-size:11px;letter-spacing:.18em;color:#a07839;font-weight:800}.public-live-intro h2{font-size:clamp(24px,3vw,38px);margin:9px 0}.public-live-intro p{font-size:14px;line-height:1.5;color:#58504a}.public-live-intro label{display:inline-flex;flex-direction:column;margin:4px 8px 10px 0;gap:6px;font-size:12px;font-weight:700}.public-live-intro select{background:white;border:1px solid #d4c5b0;border-radius:9px;padding:10px;color:#292522;min-width:140px}
+.public-live-intro #home-send-to-studio{display:block;padding:12px 19px;border-radius:12px;background:#1c2420;color:#eed0a4;font-weight:800;margin-top:8px}
+.home-mix-preview{background:linear-gradient(135deg,#faf9f5,#e3ddd5);border:1px solid white;border-radius:18px;padding:18px;color:#27221d}.home-live-top{display:flex;justify-content:space-between;gap:12px}.home-live-top span{font-size:12px;color:#746857}.home-mix-people{display:flex;gap:1px;justify-content:center;align-items:end;min-height:155px}.home-look{width:clamp(52px,11vw,92px);text-align:center}.home-look svg{width:100%;max-height:160px;transform:scale(var(--person-scale));transform-origin:bottom}.home-look span{display:block;color:#615347;font-size:10px;font-weight:650;margin-top:2px}.home-color-palette{display:flex;gap:8px;justify-content:center;margin-top:12px}.home-color-palette button{width:27px;height:27px;border:3px solid white;border-radius:50%;background:var(--tone);box-shadow:0 0 0 1px #a49a8d;cursor:pointer}.home-color-palette button.selected{box-shadow:0 0 0 3px #bb985f}.home-mix-preview>small{display:block;text-align:center;margin-top:10px;color:#797168;font-size:10px}
+.atelier-insight{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:10px;background:#20352e;color:#ffebc9;gap:12px}.atelier-insight strong{font-size:14px}.atelier-insight span{font-size:10px;color:#ead7b7}
+.atelier-body-panel{padding:12px;border:1px solid #d6c6b4;background:#fffdf9;border-radius:14px}.atelier-body-panel h4{margin:2px 0 10px;font-size:13px}.atelier-body-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.atelier-body-grid label{font-size:11px}.atelier-body-grid input{margin-top:5px}.atelier-body-panel p{font-size:11px;line-height:1.4;color:#4c483e}.atelier-body-panel .fms-caution{color:#8b5331}
+@media(max-width:840px){.public-live-studio{grid-template-columns:1fr}.public-site.studio-mode #fms-app-shell .main-area{min-width:0!important}.public-site.studio-mode #fms-app-shell .page{padding:14px 12px 45px}}
+@media(max-width:600px){.public-live-studio{padding:14px;margin:10px}.public-live-intro select{min-width:0}.home-mix-people{min-height:140px}.public-site.studio-mode #fms-app-shell .topbar{padding:12px}.public-site.studio-mode #fms-app-shell .page{overflow-x:hidden}}
+
+/* Keep the preview proportional and visible while editing a lengthy construction sheet. */
+.atelier-layout{align-items:start}
+.atelier-layout .atelier-view{position:sticky;top:88px;min-height:0;align-self:start}
+.atelier-layout .atelier-view canvas{height:auto;min-height:0}
+.atelier-controls{position:relative;bottom:auto;left:auto;right:auto;padding:6px 10px 14px;background:#161b19}
+.atelier-hint{position:relative;bottom:auto;left:auto;right:auto;margin:0;padding:0 10px 9px}
+.atelier-ab{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:4px}
+.atelier-ab button{background:#f6ead5;color:#2a251d;border:1px solid #c4ad8b;padding:9px;font-size:12px;border-radius:10px}
+.atelier-ab button:focus-visible{outline:3px solid #906e42}
+.atelier-ab-output{font-size:11px;line-height:1.5;background:#e8ece5;color:#244335;border-radius:9px;padding:10px}
+@media(max-width:850px){.atelier-layout .atelier-view{position:relative;top:auto}}
+
+.legal-mini{position:relative;flex:0 0 auto;font-size:11px}.legal-mini summary{cursor:pointer;list-style:none;border:1px solid #8c7656;border-radius:10px;padding:9px;color:#eddbba}.legal-mini[open]>div{position:absolute;bottom:calc(100% + 12px);right:0;z-index:202;background:#fffefa;color:#302b27;padding:16px;border:1px solid #c9b38f;border-radius:12px;box-shadow:0 12px 35px #0005;width:min(440px,86vw);line-height:1.5}.legal-mini[open] a{color:#654b22;text-decoration:underline}.legal-mini p{font-size:12px;margin:9px 0}
+:focus-visible{outline:2px solid #e8ba6e;outline-offset:2px}

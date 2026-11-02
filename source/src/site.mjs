@@ -10,8 +10,11 @@ const configured=Boolean(SUPABASE_URL?.startsWith('https://')&&SUPABASE_ANON_KEY
 const api=path=>SUPABASE_URL.replace(/\/$/,'')+path;
 const publicHeaders={'apikey':SUPABASE_ANON_KEY,'Content-Type':'application/json'};
 function status(message){$('#auth-status').textContent=message}
-function showLanding(){site.hidden=false;shell.hidden=true;sessionStorage.setItem('fms-page','landing');document.title='FitMyStyle — Twój styl. Idealne dopasowanie.';window.scrollTo(0,0)}
-function openPage(name){if(name==='landing'){showLanding();return}site.hidden=true;shell.hidden=false;sessionStorage.setItem('fms-page',name);window.FitMyStyleBridge?.navigate(name);document.title='FitMyStyle Studio · '+name;window.scrollTo(0,0)}
+/* One product surface: the landing and every studio module keep the SAME main navigation. */
+const footer=site.querySelector('.public-footer');if(shell.parentElement!==site)site.insertBefore(shell,footer);
+function highlightTab(name){document.querySelectorAll('.public-menu [data-open-page]').forEach(node=>{const active=node.dataset.openPage===name;node.classList.toggle('selected',active);if(active)node.setAttribute('aria-current','page');else node.removeAttribute('aria-current')})}
+function showLanding(){site.hidden=false;shell.hidden=true;site.classList.remove('studio-mode');sessionStorage.setItem('fms-page','landing');highlightTab('landing');document.title='FitMyStyle — Twój styl. Idealne dopasowanie.';window.scrollTo(0,0)}
+function openPage(name){if(name==='landing'){showLanding();return}site.hidden=false;shell.hidden=false;site.classList.add('studio-mode');sessionStorage.setItem('fms-page',name);window.FitMyStyleBridge?.navigate(name);highlightTab(name);document.title='FitMyStyle · '+name;window.scrollTo(0,0)}
 function showModal(){modal.hidden=false;$('#auth-email').focus();status(configured?'':'Konta online nie są jeszcze aktywowane. Administrator musi skonfigurować niezależny projekt uwierzytelniania.');$('#auth-submit').disabled=!configured}
 function hideModal(){modal.hidden=true}
 function setAccount(user){logged=user||null;$('#account-label').textContent=logged?(logged.email?.split('@')[0]||'Moje konto'):'Zaloguj';$('#auth-description').textContent=logged?'Twoje projekty są synchronizowane z prywatnym kontem.':'Zaloguj się, aby zachować projekty online i korzystać z nich na innych urządzeniach.';$('#auth-form').hidden=Boolean(logged);$('#auth-mode').hidden=Boolean(logged);$('#auth-reset').hidden=Boolean(logged);$('#auth-logout').hidden=!logged}
@@ -30,7 +33,7 @@ $('#public-auth-button').addEventListener('click',showModal);$('#footer-auth').a
 $('#auth-mode').addEventListener('click',()=>{signup=!signup;updateAuthMode();status('')});$('#auth-reset').addEventListener('click',async()=>{const email=$('#auth-email').value.trim();if(!email){status('Podaj adres e-mail do odzyskania hasła.');return}try{await authFetch('/auth/v1/recover',{method:'POST',body:{email},token:null});status('Jeżeli konto istnieje, wysłano instrukcję resetowania hasła.')}catch(err){status(err.message)}});$('#auth-logout').addEventListener('click',logout);
 $('#auth-form').addEventListener('submit',async e=>{e.preventDefault();const email=$('#auth-email').value.trim(),password=$('#auth-password').value;const btn=$('#auth-submit');btn.disabled=true;status('Łączenie z serwerem kont…');try{if(signup)await register(email,password);else{await login(email,password);hideModal()}}catch(err){status(err.message)}finally{btn.disabled=!configured}});
 document.querySelectorAll('[data-open-page]').forEach(btn=>btn.addEventListener('click',()=>openPage(btn.dataset.openPage)));document.querySelectorAll('[data-home]').forEach(btn=>btn.addEventListener('click',showLanding));
-document.addEventListener('fms:navigation',ev=>{if(!shell.hidden)sessionStorage.setItem('fms-page',ev.detail.page)});
+document.addEventListener('fms:navigation',ev=>{if(!shell.hidden){sessionStorage.setItem('fms-page',ev.detail.page);highlightTab(ev.detail.page)}});
 document.addEventListener('fms:changed',()=>{if(logged&&!loadingCloud){clearTimeout(saveTimer);saveTimer=setTimeout(cloudSave,1200)}});
 window.addEventListener('beforeunload',()=>{clearTimeout(saveTimer)});
 const previous=sessionStorage.getItem('fms-page')||'landing';if(previous==='landing')showLanding();else openPage(previous);
@@ -53,3 +56,14 @@ async function endGuestSession(){
 $('#footer-session-export')?.addEventListener('click',downloadGuestBackup);
 $('#footer-session-reset')?.addEventListener('click',endGuestSession);
 $('#studio-session-reset')?.addEventListener('click',endGuestSession);
+
+/* In-place home styling demo: entirely local, no bogus pricing or stock. */
+let homeColor='#d8c3a4';
+function homePreview(){const n=Number($('#home-family')?.value||4),occasion=$('#home-occasion')?.value||'casual';const container=$('#home-mix-people');if(!container)return;
+ const label={casual:'casual',elegant:'elegancka',vacation:'wakacje',winter:'jesień/zima'}[occasion];$('#home-live-description').textContent=n+' os. · '+label;
+ const people=Array.from({length:n},(_,i)=>{const child=i>=2,scale=child?'.76':'1',pant=occasion==='elegant'?'#35312d':occasion==='vacation'?'#c5ad85':'#676a64';return `<div class="home-look" style="--person-scale:${scale}"><svg viewBox="0 0 100 170" role="img" aria-label="Poglądowy ubiór osoby ${i+1}"><ellipse cx="50" cy="18" rx="13" ry="16" fill="#c9a98f"/><path d="M32 35 Q23 38 18 47 L9 91 Q12 97 20 94 L32 66 L32 108 Q50 114 68 108 L68 66 L80 94 Q88 97 91 91 L82 47 Q77 38 68 35 L58 31 Q50 40 42 31 Z" fill="${homeColor}" stroke="#85715a" stroke-width=".8"/><path d="M32 108 L31 160 L47 160 L50 116 L53 160 L69 160 L68 108Z" fill="${pant}"/><path d="M32 68 Q50 74 68 68" fill="none" stroke="#ffffff77" stroke-width="1.4"/></svg><span>${child?'Dziecko '+(i-1):i?'Partner':'Ja'}</span></div>`});
+ container.innerHTML=people.join('');
+}
+$('#home-family')?.addEventListener('change',homePreview);$('#home-occasion')?.addEventListener('change',homePreview);
+document.querySelectorAll('.home-color-palette [data-palette]').forEach(btn=>btn.addEventListener('click',()=>{homeColor=btn.dataset.palette;document.querySelectorAll('.home-color-palette button').forEach(b=>b.classList.toggle('selected',b===btn));homePreview()}));
+$('#home-send-to-studio')?.addEventListener('click',()=>openPage('studio'));homePreview();
