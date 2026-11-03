@@ -15,3 +15,6 @@ __pycache__/
 .pytest_cache/
 *.pyc
 .openai/
+
+familylook/next-app/lib/runtime/*.mjs
+familylook/next-app/lib/retail-catalog.generated.json

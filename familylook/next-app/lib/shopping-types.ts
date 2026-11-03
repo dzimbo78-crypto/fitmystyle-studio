@@ -1,0 +1,4 @@
+export type ShoppingCurrency='PLN'|'DKK'|'EUR';
+export interface RetailOffer {id:string;storeId:string;name:string;url:string;price:number;currency:ShoppingCurrency;audience:'woman'|'man'|'adult'|'child'|'infant';category:'top'|'bottom'|'onepiece'|'shoes'|'extra';garmentKind:string;colorFamily:string;color:string;sizes:string[];availability:'in'|'out'|'unknown';checkedAt:string;image:string;source:'verified-page'|'partner-feed'|'manual'|'wardrobe';market:'PL'|'DK';ageNote?:string}
+export interface ShoppingItem {id:string;memberId:string;slot:'main'|'top'|'bottom'|'shoes'|'extra';offer:RetailOffer;size:string;quantity:number;owned:boolean;purchased:boolean;locked:boolean}
+export interface ShoppingPlan {version:1;currency:ShoppingCurrency;budget:number;shippingReserve:number;scope:'main'|'outfit';items:ShoppingItem[];shipping:Record<string,{amount:number;currency:ShoppingCurrency}>}

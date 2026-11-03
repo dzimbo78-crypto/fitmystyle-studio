@@ -1,7 +1,7 @@
 /** Independent FitMyStyle snapshot. Stops without changing published data on error. */
 import {readFile,writeFile,rename,unlink} from 'node:fs/promises';import {resolve,dirname,basename} from 'node:path';import {fileURLToPath} from 'node:url';
 import {syncAllSuppliers} from '../src/catalog-sync.mjs';
-const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');if(basename(root)!=='fitmystyle-standalone')throw Error('Isolation guard: not FitMyStyle Studio');
+const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');if(!['source','fitmystyle-standalone'].includes(basename(root)))throw Error('Isolation guard: not FitMyStyle Studio');
 let manifest;try{manifest=JSON.parse(await readFile(resolve(root,'data/licensed-feeds.json'),'utf8'))}catch(e){if(e.code==='ENOENT'){console.log('Brak zatwierdzonych źródeł. Pozostawiam dotychczasowy katalog bez zmian.');process.exit(0)}throw e}
 if(!manifest.sources?.length){console.log('Brak zatwierdzonych źródeł. Pozostawiam dotychczasowy katalog bez zmian.');process.exit(0)}
 const {products,suppliers}=await syncAllSuppliers(manifest);

@@ -9,7 +9,9 @@
     "typecheck": "tsc --noEmit",
     "predev": "node scripts/sync-studio.mjs",
     "prebuild": "node scripts/sync-studio.mjs",
-    "test": "node --experimental-strip-types --test tests/*.test.ts"
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "pretest": "node scripts/sync-studio.mjs",
+    "pretypecheck": "node scripts/sync-studio.mjs"
   },
   "dependencies": {
     "next": "^16.0.1",
