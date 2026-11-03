@@ -1,0 +1,449 @@
+{
+  "version": "4.0.0",
+  "source": "ORIGINAL_GENERATED_TEMPLATE",
+  "supplierVerified": false,
+  "width": 1600,
+  "height": 800,
+  "items": {
+    "T01": {
+      "atlas": "T01.webp",
+      "mask": "T01.mask.png",
+      "front": {
+        "crop": {
+          "x": 67,
+          "y": 22,
+          "w": 667,
+          "h": 749
+        },
+        "coverage": 0.499
+      },
+      "back": {
+        "crop": {
+          "x": 866,
+          "y": 24,
+          "w": 667,
+          "h": 746
+        },
+        "coverage": 0.5038
+      }
+    },
+    "T02": {
+      "atlas": "T02.webp",
+      "mask": "T02.mask.png",
+      "front": {
+        "crop": {
+          "x": 11,
+          "y": 23,
+          "w": 771,
+          "h": 750
+        },
+        "coverage": 0.5766
+      },
+      "back": {
+        "crop": {
+          "x": 816,
+          "y": 25,
+          "w": 772,
+          "h": 748
+        },
+        "coverage": 0.5833
+      }
+    },
+    "T03": {
+      "atlas": "T03.webp",
+      "mask": "T03.mask.png",
+      "front": {
+        "crop": {
+          "x": 80,
+          "y": 29,
+          "w": 638,
+          "h": 744
+        },
+        "coverage": 0.4815
+      },
+      "back": {
+        "crop": {
+          "x": 882,
+          "y": 29,
+          "w": 634,
+          "h": 744
+        },
+        "coverage": 0.4869
+      }
+    },
+    "T04": {
+      "atlas": "T04.webp",
+      "mask": "T04.mask.png",
+      "front": {
+        "crop": {
+          "x": 34,
+          "y": 24,
+          "w": 714,
+          "h": 737
+        },
+        "coverage": 0.6239
+      },
+      "back": {
+        "crop": {
+          "x": 834,
+          "y": 28,
+          "w": 722,
+          "h": 733
+        },
+        "coverage": 0.6345
+      }
+    },
+    "T05": {
+      "atlas": "T05.webp",
+      "mask": "T05.mask.png",
+      "front": {
+        "crop": {
+          "x": 14,
+          "y": 24,
+          "w": 763,
+          "h": 744
+        },
+        "coverage": 0.6842
+      },
+      "back": {
+        "crop": {
+          "x": 819,
+          "y": 27,
+          "w": 767,
+          "h": 741
+        },
+        "coverage": 0.6909
+      }
+    },
+    "T06": {
+      "atlas": "T06.webp",
+      "mask": "T06.mask.png",
+      "front": {
+        "crop": {
+          "x": 36,
+          "y": 6,
+          "w": 718,
+          "h": 770
+        },
+        "coverage": 0.6546
+      },
+      "back": {
+        "crop": {
+          "x": 840,
+          "y": 11,
+          "w": 720,
+          "h": 767
+        },
+        "coverage": 0.6551
+      }
+    },
+    "T07": {
+      "atlas": "T07.webp",
+      "mask": "T07.mask.png",
+      "front": {
+        "crop": {
+          "x": 33,
+          "y": 8,
+          "w": 730,
+          "h": 768
+        },
+        "coverage": 0.6682
+      },
+      "back": {
+        "crop": {
+          "x": 834,
+          "y": 7,
+          "w": 729,
+          "h": 770
+        },
+        "coverage": 0.6638
+      }
+    },
+    "T08": {
+      "atlas": "T08.webp",
+      "mask": "T08.mask.png",
+      "front": {
+        "crop": {
+          "x": 52,
+          "y": 30,
+          "w": 689,
+          "h": 738
+        },
+        "coverage": 0.6105
+      },
+      "back": {
+        "crop": {
+          "x": 851,
+          "y": 30,
+          "w": 691,
+          "h": 738
+        },
+        "coverage": 0.6177
+      }
+    },
+    "T09": {
+      "atlas": "T09.webp",
+      "mask": "T09.mask.png",
+      "front": {
+        "crop": {
+          "x": 25,
+          "y": 25,
+          "w": 739,
+          "h": 737
+        },
+        "coverage": 0.6659
+      },
+      "back": {
+        "crop": {
+          "x": 831,
+          "y": 25,
+          "w": 745,
+          "h": 737
+        },
+        "coverage": 0.669
+      }
+    },
+    "T10": {
+      "atlas": "T10.webp",
+      "mask": "T10.mask.png",
+      "front": {
+        "crop": {
+          "x": 115,
+          "y": 9,
+          "w": 566,
+          "h": 780
+        },
+        "coverage": 0.5202
+      },
+      "back": {
+        "crop": {
+          "x": 916,
+          "y": 8,
+          "w": 569,
+          "h": 782
+        },
+        "coverage": 0.5208
+      }
+    },
+    "T11": {
+      "atlas": "T11.webp",
+      "mask": "T11.mask.png",
+      "front": {
+        "crop": {
+          "x": 49,
+          "y": 10,
+          "w": 691,
+          "h": 758
+        },
+        "coverage": 0.6
+      },
+      "back": {
+        "crop": {
+          "x": 856,
+          "y": 11,
+          "w": 694,
+          "h": 757
+        },
+        "coverage": 0.6021
+      }
+    },
+    "T12": {
+      "atlas": "T12.webp",
+      "mask": "T12.mask.png",
+      "front": {
+        "crop": {
+          "x": 33,
+          "y": 23,
+          "w": 725,
+          "h": 747
+        },
+        "coverage": 0.6517
+      },
+      "back": {
+        "crop": {
+          "x": 833,
+          "y": 25,
+          "w": 727,
+          "h": 745
+        },
+        "coverage": 0.6512
+      }
+    },
+    "T13": {
+      "atlas": "T13.webp",
+      "mask": "T13.mask.png",
+      "front": {
+        "crop": {
+          "x": 70,
+          "y": 12,
+          "w": 638,
+          "h": 774
+        },
+        "coverage": 0.5654
+      },
+      "back": {
+        "crop": {
+          "x": 876,
+          "y": 13,
+          "w": 639,
+          "h": 774
+        },
+        "coverage": 0.5689
+      }
+    },
+    "T14": {
+      "atlas": "T14.webp",
+      "mask": "T14.mask.png",
+      "front": {
+        "crop": {
+          "x": 45,
+          "y": 13,
+          "w": 703,
+          "h": 769
+        },
+        "coverage": 0.652
+      },
+      "back": {
+        "crop": {
+          "x": 845,
+          "y": 12,
+          "w": 709,
+          "h": 771
+        },
+        "coverage": 0.6526
+      }
+    },
+    "T15": {
+      "atlas": "T15.webp",
+      "mask": "T15.mask.png",
+      "front": {
+        "crop": {
+          "x": 74,
+          "y": 12,
+          "w": 644,
+          "h": 765
+        },
+        "coverage": 0.4843
+      },
+      "back": {
+        "crop": {
+          "x": 880,
+          "y": 12,
+          "w": 644,
+          "h": 765
+        },
+        "coverage": 0.491
+      }
+    },
+    "T16": {
+      "atlas": "T16.webp",
+      "mask": "T16.mask.png",
+      "front": {
+        "crop": {
+          "x": 237,
+          "y": 17,
+          "w": 331,
+          "h": 769
+        },
+        "coverage": 0.2976
+      },
+      "back": {
+        "crop": {
+          "x": 1033,
+          "y": 17,
+          "w": 334,
+          "h": 769
+        },
+        "coverage": 0.3015
+      }
+    },
+    "T17": {
+      "atlas": "T17.webp",
+      "mask": "T17.mask.png",
+      "front": {
+        "crop": {
+          "x": 245,
+          "y": 14,
+          "w": 342,
+          "h": 776
+        },
+        "coverage": 0.355
+      },
+      "back": {
+        "crop": {
+          "x": 1021,
+          "y": 16,
+          "w": 347,
+          "h": 775
+        },
+        "coverage": 0.3552
+      }
+    },
+    "T18": {
+      "atlas": "T18.webp",
+      "mask": "T18.mask.png",
+      "front": {
+        "crop": {
+          "x": 187,
+          "y": 13,
+          "w": 427,
+          "h": 779
+        },
+        "coverage": 0.3464
+      },
+      "back": {
+        "crop": {
+          "x": 985,
+          "y": 13,
+          "w": 430,
+          "h": 778
+        },
+        "coverage": 0.347
+      }
+    },
+    "T19": {
+      "atlas": "T19.webp",
+      "mask": "T19.mask.png",
+      "front": {
+        "crop": {
+          "x": 82,
+          "y": 26,
+          "w": 622,
+          "h": 750
+        },
+        "coverage": 0.4863
+      },
+      "back": {
+        "crop": {
+          "x": 891,
+          "y": 27,
+          "w": 627,
+          "h": 749
+        },
+        "coverage": 0.4851
+      }
+    },
+    "T20": {
+      "atlas": "T20.webp",
+      "mask": "T20.mask.png",
+      "front": {
+        "crop": {
+          "x": 177,
+          "y": 10,
+          "w": 466,
+          "h": 778
+        },
+        "coverage": 0.3512
+      },
+      "back": {
+        "crop": {
+          "x": 956,
+          "y": 11,
+          "w": 467,
+          "h": 778
+        },
+        "coverage": 0.3536
+      }
+    }
+  }
+}

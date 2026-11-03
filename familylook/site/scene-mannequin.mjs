@@ -1,3 +1,4 @@
+import {paintDesign} from './design-layer.mjs';
 import * as THREE from './vendor/three.module.js';
 import {clamp,printPlacement,safeColor} from './scene-model.mjs';
 import {clothMaterial} from './scene-materials.mjs';
@@ -87,10 +88,9 @@ export function buildMannequin(spec,person,artwork,overlayImage=null){
   stitch([[-hip*.65,hy+.038*s,hip*.58],[0,hy+.038*s,hip*.73],[hip*.65,hy+.038*s,hip*.58]],.001*s);
  }
  // Independent, curved print surface with UVs. It follows the visible garment face.
- if((artwork.text||overlayImage)&&t.kind!=='pants'){
+ if(artwork.enabled!==false&&(artwork.text||overlayImage)&&t.kind!=='pants'){
   const c=document.createElement('canvas');c.width=c.height=1024;const ctx=c.getContext('2d');
-  if(overlayImage){const max=artwork.text?620:900,ratio=Math.min(900/overlayImage.width,max/overlayImage.height),iw=overlayImage.width*ratio,ih=overlayImage.height*ratio;ctx.drawImage(overlayImage,(1024-iw)/2,artwork.text?80:(1024-ih)/2,iw,ih);}
-  if(artwork.text){const text=String(artwork.text).slice(0,38);let font=110;ctx.font=`600 ${font}px Arial`;while(ctx.measureText(text).width>940&&font>22)ctx.font=`600 ${--font}px Arial`;ctx.fillStyle=safeColor(artwork.color,'#594d43');ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,512,overlayImage?850:512);}
+  paintDesign(ctx,artwork,overlayImage,1024);
   const tx=new THREE.CanvasTexture(c);tx.colorSpace=THREE.SRGBColorSpace;tx.anisotropy=4;
   const mat=new THREE.MeshStandardMaterial({map:tx,transparent:true,depthWrite:false,roughness:.88,polygonOffset:true,polygonOffsetFactor:-1,side:THREE.DoubleSide});mat.userData.ownedTexture=true;
   const place=printPlacement(spec,artwork),sign=place.back?-1:1;

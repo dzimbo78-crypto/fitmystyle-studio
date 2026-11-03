@@ -23,7 +23,7 @@ export function modelSpec(person,project,index=0){
  const palette=(PALETTES.find(p=>p.id===project.paletteId)||PALETTES[0]).colors;
  return {...d,baby,child,s,headYRadius,shoulderY,hipY,chestR,waistR,hipR,shoulder,ease,template:t,
   color:safeColor(person.preview?.color,palette[index%palette.length]),
-  skin:safeColor(person.preview?.skin,SKIN_TONES[1]),pattern:TEXTILE_PATTERNS.some(p=>p[0]===person.preview?.pattern)?person.preview.pattern:'plain',
+  skin:safeColor(person.preview?.skin,SKIN_TONES[1]),pattern:person.preview?.patternEnabled===false?'plain':TEXTILE_PATTERNS.some(p=>p[0]===person.preview?.pattern)?person.preview.pattern:'plain',patternScale:clamp(Number(person.preview?.patternScale)||1,.5,2.5),
   hair:['none','short','bob'].includes(person.preview?.hair)?person.preview.hair:'none',
   measured:['height','chest','waist','hip'].filter(k=>Number(person.measurements?.[k])>0).length};
 }
