@@ -1,8 +1,8 @@
 import {safeText as esc,chooseTemplate} from './domain.mjs';
 import {memberColor} from './photo-catalog.mjs';
-import {STORES,storeName,shopSearchURL} from './shopping-stores.mjs';
-import {COLORS,SLOTS,CURRENCIES,moneyMinor,money,normalizeOffer,normalizeShopping,convertMinor,shoppingTotals,searchOffers,shoppingVariants,priceAge,sizeStatus,personShoppingSize,offerReasons,synchronizeShoppingOffers} from './shopping-core.mjs';
-import {shoppingCSV,shoppingReport} from './shopping-exports.mjs';
+import {STORES,storeName,shopSearchURL} from './shopping-stores.mjs?v=6.1';
+import {COLORS,SLOTS,CURRENCIES,moneyMinor,money,normalizeOffer,normalizeShopping,convertMinor,shoppingTotals,searchOffers,shoppingVariants,priceAge,sizeStatus,personShoppingSize,offerReasons,synchronizeShoppingOffers} from './shopping-core.mjs?v=6.1';
+import {shoppingCSV,shoppingReport} from './shopping-exports.mjs?v=6.1';
 let counter=0;const uid=()=>globalThis.crypto?.randomUUID?.()||`shop-${Date.now().toString(36)}-${++counter}`;
 const colorNames={white:'Biały / ecru',beige:'Beżowy',brown:'Brązowy',green:'Zielony',navy:'Granatowy',black:'Czarny',grey:'Szary',blue:'Niebieski',pink:'Różowy',red:'Czerwony',yellow:'Żółty',orange:'Pomarańczowy',purple:'Fioletowy',multi:'Wielokolorowy'};
 const categories={all:'Wszystkie',top:'Góra',bottom:'Dół',onepiece:'Sukienki i komplety',shoes:'Buty',outer:'Okrycia',extra:'Dodatki'};
