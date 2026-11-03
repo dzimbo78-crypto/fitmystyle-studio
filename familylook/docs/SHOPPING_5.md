@@ -1,6 +1,8 @@
-# FamilyLook shopping and family budget
+# FamilyLook shopping and family budget — release 5 history
 
-The existing public static Render application now includes a shopping planner. It searches a curated catalog of 32 real offers from official H&M, C&A and Decathlon product pages, links to each exact product, and provides direct search links to H&M, C&A, Reserved, Sinsay and Decathlon. All 32 offers have official product image URLs. The catalog records the date of the observed retail price and does not claim live inventory or a merchant partnership.
+Current release: [SHOPPING_6.md](SHOPPING_6.md). This document records the previous 32-offer release.
+
+Release 5 introduced a shopping planner. It searches a curated catalog of 32 real offers from official H&M, C&A and Decathlon product pages, links to each exact product, and provides direct search links to H&M, C&A, Reserved, Sinsay and Decathlon. All 32 offers have official product image URLs. The catalog records the date of the observed retail price and does not claim live inventory or a merchant partnership.
 
 ## Customer workflow
 
