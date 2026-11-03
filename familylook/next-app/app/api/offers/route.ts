@@ -1,0 +1,4 @@
+import {NextRequest,NextResponse} from 'next/server';
+import catalog from '@/lib/retail-catalog.generated.json';
+import {normalizeOffer} from '@/lib/runtime/shopping-core.mjs';
+export function GET(request:NextRequest){const q=(request.nextUrl.searchParams.get('q')||'').slice(0,100).toLocaleLowerCase('pl'),audience=request.nextUrl.searchParams.get('audience'),store=request.nextUrl.searchParams.get('store');const offers=catalog.offers.map(normalizeOffer).filter(o=>o&&(!audience||o.audience===audience)&&(!store||o.storeId===store)&&(!q||[o.name,o.color,o.storeId].join(' ').toLocaleLowerCase('pl').includes(q)));return NextResponse.json({schema:catalog.schema,checkedAt:catalog.checkedAt,priceMode:'dated-page-snapshot',liveStock:false,offers},{headers:{'Cache-Control':'public, max-age=300, s-maxage=900','X-Content-Type-Options':'nosniff'}});}
