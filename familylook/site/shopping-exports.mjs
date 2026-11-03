@@ -1,6 +1,6 @@
 import {safeText as esc} from './domain.mjs';
-import {money,convertMinor,shoppingTotals,SLOTS} from './shopping-core.mjs';
-import {storeName} from './shopping-stores.mjs';
+import {money,convertMinor,shoppingTotals,SLOTS} from './shopping-core.mjs?v=6.1';
+import {storeName} from './shopping-stores.mjs?v=6.1';
 
 export function shoppingCSV(project,plan,fx){
  const t=shoppingTotals(project,plan,fx),rows=[['Osoba','Element','Produkt','Sklep','Rozmiar do potwierdzenia','Ilość','Cena oryginalna','Waluta','Koszt '+plan.currency,'Własna szafa','Kupione','Data ceny','Link']];

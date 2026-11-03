@@ -47,3 +47,7 @@ The deployed Render service remains static. The Next.js API and authenticated Su
 Automated tests exercise real-catalog completeness, budget feasibility with the project palette, clothing/shoe size separation, age-labelled ranges, category/set classification, cold-weather footwear, fixed rows, caps, merchant restrictions, schema migration, public API pagination, quote synchronization, CSV totals and HTML escaping. Existing measurements, photo layers and fulfillment contracts remain covered.
 
 Browser QA covers 3,177-offer loading, actual retailer images, family selection, three proposals, product detail galleries, comparison, favorites, saved looks across reload, CSV/print parity, desktop sidebar reachability and a 375px content viewport with no horizontal overflow. Official Cropp/House searches were corrected to the native homepage query route; Mohito and bonprix use verified retailer search formats. Cloud browser extension logging is not treated as an application error.
+
+## 6.1 startup hardening
+
+The static app loads shopping as an independent dynamic module, so a delayed retailer module does not prevent the family configurator or measurement workspace from starting. The app, project importer, shopping modules and CSS use a consistent release query in the browser dependency graph and offline cache. Initial module failure has an explicit reload action. The React shopping entry uses the same release query.
