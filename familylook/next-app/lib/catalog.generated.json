@@ -1,0 +1,505 @@
+{
+  "templates": [
+    {
+      "id": "T01",
+      "name": "Everyday Tee",
+      "kind": "tee",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "fabric": "jersey",
+      "fit": "regular"
+    },
+    {
+      "id": "T02",
+      "name": "Heavy Oversized Tee",
+      "kind": "tee",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "fabric": "heavy_jersey",
+      "fit": "oversized"
+    },
+    {
+      "id": "T03",
+      "name": "Organic Relaxed Tee",
+      "kind": "tee",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "fabric": "organic_jersey",
+      "fit": "relaxed"
+    },
+    {
+      "id": "T04",
+      "name": "Classic Crewneck",
+      "kind": "crewneck",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "fabric": "french_terry",
+      "fit": "regular"
+    },
+    {
+      "id": "T05",
+      "name": "Oversized Crewneck",
+      "kind": "crewneck",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "fabric": "fleece",
+      "fit": "oversized"
+    },
+    {
+      "id": "T06",
+      "name": "Scandi Hoodie",
+      "kind": "hoodie",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "fabric": "fleece",
+      "fit": "relaxed"
+    },
+    {
+      "id": "T07",
+      "name": "Zip Hoodie",
+      "kind": "hoodie",
+      "groups": [
+        "adult"
+      ],
+      "fabric": "french_terry",
+      "fit": "regular"
+    },
+    {
+      "id": "T08",
+      "name": "Fine Knit Sweater",
+      "kind": "sweater",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "fabric": "knit",
+      "fit": "regular"
+    },
+    {
+      "id": "T09",
+      "name": "Cable Knit",
+      "kind": "sweater",
+      "groups": [
+        "adult"
+      ],
+      "fabric": "cable_knit",
+      "fit": "relaxed"
+    },
+    {
+      "id": "T10",
+      "name": "Ribbed Turtleneck",
+      "kind": "sweater",
+      "groups": [
+        "adult"
+      ],
+      "fabric": "ribbed",
+      "fit": "slim"
+    },
+    {
+      "id": "T11",
+      "name": "Half-Zip Knit",
+      "kind": "sweater",
+      "groups": [
+        "adult"
+      ],
+      "fabric": "knit",
+      "fit": "regular"
+    },
+    {
+      "id": "T12",
+      "name": "Soft Cardigan",
+      "kind": "sweater",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "fabric": "knit",
+      "fit": "relaxed"
+    },
+    {
+      "id": "T13",
+      "name": "Oxford Shirt",
+      "kind": "shirt",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "fabric": "oxford",
+      "fit": "regular"
+    },
+    {
+      "id": "T14",
+      "name": "Linen Overshirt",
+      "kind": "shirt",
+      "groups": [
+        "adult"
+      ],
+      "fabric": "linen",
+      "fit": "relaxed"
+    },
+    {
+      "id": "T15",
+      "name": "Everyday Polo",
+      "kind": "polo",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "fabric": "pique",
+      "fit": "regular"
+    },
+    {
+      "id": "T16",
+      "name": "Scandi Jogger",
+      "kind": "pants",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "fabric": "french_terry",
+      "fit": "regular"
+    },
+    {
+      "id": "T17",
+      "name": "Relaxed Trouser",
+      "kind": "pants",
+      "groups": [
+        "adult"
+      ],
+      "fabric": "twill",
+      "fit": "relaxed"
+    },
+    {
+      "id": "T18",
+      "name": "Essential Dress",
+      "kind": "dress",
+      "groups": [
+        "adult",
+        "child"
+      ],
+      "fabric": "jersey",
+      "fit": "regular"
+    },
+    {
+      "id": "T19",
+      "name": "Baby Wrap Body",
+      "kind": "bodysuit",
+      "groups": [
+        "infant"
+      ],
+      "fabric": "organic_jersey",
+      "fit": "regular"
+    },
+    {
+      "id": "T20",
+      "name": "Baby Cozy Set",
+      "kind": "bodysuit",
+      "groups": [
+        "infant"
+      ],
+      "fabric": "french_terry",
+      "fit": "relaxed"
+    }
+  ],
+  "palettes": [
+    {
+      "id": "nordic",
+      "name": "Nordic Calm",
+      "colors": [
+        "#D8CCBA",
+        "#8C9787",
+        "#5C4B43"
+      ]
+    },
+    {
+      "id": "sand",
+      "name": "Sand & Stone",
+      "colors": [
+        "#F1E9D9",
+        "#C5A88C",
+        "#55524D"
+      ]
+    },
+    {
+      "id": "forest",
+      "name": "Forest Day",
+      "colors": [
+        "#E9E3D7",
+        "#566E57",
+        "#363D33"
+      ]
+    },
+    {
+      "id": "coast",
+      "name": "Coastal Linen",
+      "colors": [
+        "#F1EEE8",
+        "#7791A3",
+        "#28394B"
+      ]
+    },
+    {
+      "id": "rose",
+      "name": "Dusty Rose",
+      "colors": [
+        "#F0E1DE",
+        "#B88E94",
+        "#6B4A52"
+      ]
+    },
+    {
+      "id": "espresso",
+      "name": "Espresso Studio",
+      "colors": [
+        "#EEE7DA",
+        "#9A7F69",
+        "#49352F"
+      ]
+    },
+    {
+      "id": "olive",
+      "name": "Earth & Olive",
+      "colors": [
+        "#EDE5D5",
+        "#858A65",
+        "#36372E"
+      ]
+    },
+    {
+      "id": "mono",
+      "name": "Monochrome",
+      "colors": [
+        "#F6F3ED",
+        "#AFAFAB",
+        "#252525"
+      ]
+    }
+  ],
+  "measures": [
+    {
+      "key": "height",
+      "label": "Wzrost",
+      "unit": "cm",
+      "zone": "height",
+      "tip": "Bez butów, od podłoża do najwyższego punktu głowy; plecy proste, patrz przed siebie.",
+      "limits": [
+        38,
+        230
+      ]
+    },
+    {
+      "key": "chest",
+      "label": "Obwód klatki / biustu",
+      "zone": "chest",
+      "tip": "Miarka poziomo wokół najszerszej części klatki; przeprowadź ją pod pachami, nie uciskaj. Dla biustu użyj zwykłej, dobrze dopasowanej bielizny.",
+      "limits": [
+        32,
+        180
+      ]
+    },
+    {
+      "key": "underbust",
+      "label": "Obwód pod biustem",
+      "zone": "underbust",
+      "tip": "Poziomo bezpośrednio pod biustem; tylko jeśli konstrukcja tego wymaga.",
+      "limits": [
+        45,
+        160
+      ]
+    },
+    {
+      "key": "waist",
+      "label": "Obwód talii naturalnej",
+      "zone": "waist",
+      "tip": "W najwęższym naturalnym miejscu tułowia, zwykle między dolnym żebrem a biodrem; swobodny wydech.",
+      "limits": [
+        30,
+        180
+      ]
+    },
+    {
+      "key": "hip",
+      "label": "Obwód bioder / pośladków",
+      "zone": "hip",
+      "tip": "Miarka poziomo przez najszerszą część pośladków; nie ściągaj jej.",
+      "limits": [
+        35,
+        190
+      ]
+    },
+    {
+      "key": "neck",
+      "label": "Obwód podstawy szyi",
+      "zone": "neck",
+      "tip": "Luźno wokół nasady szyi, bez ucisku. Nie mierz u niemowlęcia, jeśli nie jest to konieczne.",
+      "limits": [
+        18,
+        65
+      ]
+    },
+    {
+      "key": "shoulder",
+      "label": "Szerokość ramion",
+      "zone": "shoulder",
+      "tip": "Z tyłu, od kostnego punktu jednego barku do drugiego, wzdłuż linii barków.",
+      "limits": [
+        15,
+        65
+      ]
+    },
+    {
+      "key": "backLength",
+      "label": "Długość pleców do talii",
+      "zone": "backLength",
+      "tip": "Od wystającego kręgu u nasady karku pionowo do zaznaczonej linii talii.",
+      "limits": [
+        15,
+        80
+      ]
+    },
+    {
+      "key": "frontLength",
+      "label": "Długość przodu do talii",
+      "zone": "frontLength",
+      "tip": "Od punktu przy nasadzie szyi przez przód tułowia do naturalnej talii.",
+      "limits": [
+        15,
+        85
+      ]
+    },
+    {
+      "key": "sleeve",
+      "label": "Długość rękawa",
+      "zone": "sleeve",
+      "tip": "Od punktu barkowego przez lekko zgięty łokieć do nadgarstka; zapisz sposób pomiaru.",
+      "limits": [
+        10,
+        100
+      ]
+    },
+    {
+      "key": "bicep",
+      "label": "Obwód ramienia",
+      "zone": "bicep",
+      "tip": "Wokół najszerszego miejsca ramienia przy rozluźnionym mięśniu.",
+      "limits": [
+        9,
+        70
+      ]
+    },
+    {
+      "key": "wrist",
+      "label": "Obwód nadgarstka",
+      "zone": "wrist",
+      "tip": "Tuż nad kostkami nadgarstka, bez zaciskania miarki.",
+      "limits": [
+        7,
+        35
+      ]
+    },
+    {
+      "key": "inseam",
+      "label": "Długość nogawki wewnętrzna",
+      "zone": "inseam",
+      "tip": "Od kroku wzdłuż wewnętrznej strony nogi do wybranego miejsca zakończenia nogawki; najlepiej z pomocą.",
+      "limits": [
+        14,
+        115
+      ]
+    },
+    {
+      "key": "outseam",
+      "label": "Długość nogawki zewnętrzna",
+      "zone": "outseam",
+      "tip": "Od linii talii przy boku ciała do miejsca zakończenia nogawki.",
+      "limits": [
+        20,
+        140
+      ]
+    },
+    {
+      "key": "thigh",
+      "label": "Obwód uda",
+      "zone": "thigh",
+      "tip": "W najszerszym miejscu górnej części uda, miarka poziomo.",
+      "limits": [
+        15,
+        95
+      ]
+    },
+    {
+      "key": "head",
+      "label": "Obwód głowy (opcjonalny)",
+      "zone": "head",
+      "tip": "Wokół najszerszego miejsca głowy, powyżej brwi i uszu; do czapek i kapturów. U niemowląt bez ucisku.",
+      "limits": [
+        28,
+        68
+      ]
+    }
+  ],
+  "printZones": {
+    "tee": {
+      "w": 260,
+      "h": 310
+    },
+    "crewneck": {
+      "w": 280,
+      "h": 310
+    },
+    "hoodie": {
+      "w": 260,
+      "h": 270
+    },
+    "sweater": {
+      "w": 220,
+      "h": 260
+    },
+    "shirt": {
+      "w": 100,
+      "h": 120
+    },
+    "polo": {
+      "w": 85,
+      "h": 90
+    },
+    "pants": {
+      "w": 95,
+      "h": 170
+    },
+    "dress": {
+      "w": 210,
+      "h": 280
+    },
+    "bodysuit": {
+      "w": 110,
+      "h": 125
+    }
+  },
+  "fabrics": {
+    "jersey": "Bawełna jersey",
+    "heavy_jersey": "Jersey ciężki",
+    "organic_jersey": "Jersey organiczny",
+    "french_terry": "French terry",
+    "fleece": "Dzianina drapana",
+    "knit": "Dzianina swetrowa",
+    "cable_knit": "Dzianina warkoczowa",
+    "ribbed": "Dzianina prążkowana",
+    "oxford": "Tkanina oxford",
+    "linen": "Len / mieszanka lniana",
+    "pique": "Pika",
+    "twill": "Twill"
+  }
+}

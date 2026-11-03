@@ -1,0 +1,10 @@
+import {NextRequest} from 'next/server';
+import {safeConfig,templateFor} from '@/lib/domain';
+import {palettes} from '@/lib/catalog';
+import {readBoundedJson,reply} from '@/lib/server';
+const enabled=()=>Boolean(process.env.FAMILYLOOK_FASTAPI_URL&&process.env.FAMILYLOOK_BACKEND_TOKEN&&process.env.FAMILYLOOK_AI_ENABLED==='true');
+export async function GET(){return reply({enabled:enabled(),fallback:'LOCAL_3D'});}
+export async function POST(req:NextRequest){if(!enabled())return reply({error:'AI nie jest podłączone. Korzystaj z manekinów 3D.',fallback:'LOCAL_3D'},503);try{const body=await readBoundedJson(req) as Record<string,unknown>;if(body.consent!==true)return reply({error:'Potwierdź przesłanie opisu ubrań do generatora.'},400);const config=safeConfig(body.configuration),base=new URL(process.env.FAMILYLOOK_FASTAPI_URL!);if(base.protocol!=='https:'&&process.env.NODE_ENV==='production')throw Error('HTTPS required');const palette=palettes.find(p=>p.id===config.paletteId)!.colors.join(', '),description=config.members.map((p,i)=>`${i+1}. ${p.group}, ${p.shape}, ${templateFor(p).name}, ${p.preview?.color||palettes.find(p=>p.id===config.paletteId)!.colors[i%3]}`).join('; ').slice(0,1400);
+ const response=await fetch(new URL('/api/visualize',base),{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${process.env.FAMILYLOOK_BACKEND_TOKEN}`},body:JSON.stringify({people:config.members.length,outfit_description:description,palette}),cache:'no-store',signal:AbortSignal.timeout(65000)});
+ if(!response.ok)return reply({error:'Generator niedostępny lub limit wyczerpany.',fallback:'LOCAL_3D'},response.status===429?429:503);const result=await response.json();if(typeof result.image_url!=='string'||!result.image_url.startsWith('https://'))throw Error('Invalid image');return reply({image_url:result.image_url,status:'AI_INSPIRATION',fallback:'LOCAL_3D'});
+ }catch{return reply({error:'Nie udało się przygotować fotografii. Podgląd 3D nadal działa.',fallback:'LOCAL_3D'},503);}}

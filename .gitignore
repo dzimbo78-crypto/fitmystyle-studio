@@ -5,3 +5,13 @@ source/dist/
 .env
 .env.*
 !*.example
+
+# Next.js build output and generated copies of shared studio assets
+familylook/next-app/.next/
+familylook/next-app/public/studio/
+familylook/next-app/tsconfig.tsbuildinfo
+
+__pycache__/
+.pytest_cache/
+*.pyc
+.openai/

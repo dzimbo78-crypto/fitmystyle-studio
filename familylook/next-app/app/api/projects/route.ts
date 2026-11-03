@@ -1,22 +1,9 @@
-import {NextRequest,NextResponse} from 'next/server';
-import {createClient} from '@supabase/supabase-js';
+import {NextRequest} from 'next/server';
 import {safeConfig} from '@/lib/domain';
-import type {FamilyLookConfig} from '@/lib/types';
-export async function POST(req:NextRequest){
- const url=process.env.NEXT_PUBLIC_SUPABASE_URL,anon=process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
- if(!url||!anon)return NextResponse.json({error:'Baza kont jest wyłączona.'},{status:503});
- const auth=req.headers.get('authorization')||'';
- if(!auth.startsWith('Bearer '))return NextResponse.json({error:'Wymagane logowanie.'},{status:401});
- const token=auth.slice(7);
- const db=createClient(url,anon,{global:{headers:{Authorization:`Bearer ${token}`}},auth:{persistSession:false,autoRefreshToken:false}});
- const user=await db.auth.getUser(token);
- if(user.error||!user.data.user)return NextResponse.json({error:'Sesja wygasła.'},{status:401});
- try {
-   const raw=await req.text();
-   if(raw.length>450_000)return NextResponse.json({error:'Projekt jest zbyt duży.'},{status:413});
-   const config=safeConfig(JSON.parse(raw) as FamilyLookConfig);
-   const {data,error}=await db.from('familylook_projects').insert({owner_id:user.data.user.id,title:config.title,payload:config,schema_version:config.schemaVersion}).select('id,updated_at').single();
-   if(error)return NextResponse.json({error:'Nie udało się zapisać projektu.'},{status:400});
-   return NextResponse.json({ok:true,...data});
- }catch{return NextResponse.json({error:'Nieprawidłowy format projektu.'},{status:400})}
-}
+import {authenticatedDatabase,readBoundedJson,reply} from '@/lib/server';
+export async function GET(req:NextRequest){const auth=await authenticatedDatabase(req);if(auth.error)return auth.error;const {data,error}=await auth.db!.from('familylook_projects').select('id,title,payload,updated_at').eq('owner_id',auth.user!.id).order('updated_at',{ascending:false}).limit(20);return error?reply({error:'Nie udało się pobrać projektów.'},503):reply({projects:data});}
+export async function POST(req:NextRequest){const auth=await authenticatedDatabase(req);if(auth.error)return auth.error;try{const body=await readBoundedJson(req) as Record<string,unknown>;if(body.consent!==true)return reply({error:'Wymagana zgoda na zapis projektu i pomiarów.'},400);const config=safeConfig(body.configuration);let query;
+ if(body.id){if(typeof body.id!=='string'||!/^[0-9a-f-]{36}$/i.test(body.id)||typeof body.expectedUpdatedAt!=='string')return reply({error:'Brak wersji projektu do aktualizacji.'},400);query=auth.db!.from('familylook_projects').update({title:config.title,payload:config,schema_version:config.schemaVersion}).eq('id',body.id).eq('owner_id',auth.user!.id).eq('updated_at',body.expectedUpdatedAt).select('id,updated_at').maybeSingle();}
+ else query=auth.db!.from('familylook_projects').insert({owner_id:auth.user!.id,title:config.title,payload:config,schema_version:config.schemaVersion}).select('id,updated_at').single();
+ const {data,error}=await query;if(error)return reply({error:'Nie udało się zapisać projektu.'},400);if(!data)return reply({error:'Projekt zmienił się na innym urządzeniu. Wczytaj jego aktualną wersję.'},409);return reply({ok:true,...data},body.id?200:201);
+ }catch(e){return reply({error:e instanceof Error&&e.message==='too-large'?'Projekt jest zbyt duży.':'Nieprawidłowy format projektu.'},e instanceof Error&&e.message==='too-large'?413:400);}}
