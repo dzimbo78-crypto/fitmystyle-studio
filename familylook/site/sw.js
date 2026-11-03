@@ -1,0 +1,7 @@
+const CACHE='familylook-atelier-3.1';
+const FILES=['./','index.html','styles.css','family-scene.css','family-scene.css?v=3','app.mjs?v=3','domain.mjs','project-io.mjs','tailor-bridge.mjs','measurements-core.mjs','family-scene.mjs','scene-model.mjs','scene-materials.mjs','scene-mannequin.mjs','scene-webgl.mjs','scene-canvas.mjs','vendor/three.module.js','vendor/three.core.js','assets/icon.svg','assets/collection-studio-v3.webp','manifest.webmanifest','measurements.html','measurements.css','measurements.mjs','tailor-report.mjs','graphics.mjs','core.mjs','pomiar-przewodnik.html','instrukcja-pomiarow.pdf'];
+self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES))));
+self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('familylook-atelier-')&&k!==CACHE).map(k=>caches.delete(k))))));
+self.addEventListener('fetch',event=>{const req=event.request,url=new URL(req.url);if(req.method!=='GET'||url.origin!==location.origin||url.pathname.includes('/api/')||req.headers.has('authorization'))return;
+ event.respondWith(fetch(req).then(response=>{if(response.ok){const copy=response.clone();caches.open(CACHE).then(cache=>cache.put(req,copy));}return response;}).catch(()=>caches.match(req).then(found=>found||(req.mode==='navigate'?caches.match('index.html'):Response.error()))));
+});

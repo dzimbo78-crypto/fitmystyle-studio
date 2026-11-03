@@ -4,7 +4,7 @@ Independent sewing measurement & production-review dossier, built under `dzimbo7
 
 ## Live interface
 
-- `/measurements.html`: enter family size (1–8), adult F/M, child or infant, with independent measurements per person.
+- `/measurements.html`: enter family size (1–12), adult F/M/individual, child or infant, with independent measurements per person.
 - 17 illustrated anatomical measurement definitions A–Q, instructions, on-focus diagram, required vs optional fields by garment.
 - 8 garment categories, 6 material types, four fits; body measurements and **design ease** separate from seam and hem allowances.
 - Real-time completeness checks and plausible-range warnings. Missing values are **not auto-filled** from retail sizing charts.

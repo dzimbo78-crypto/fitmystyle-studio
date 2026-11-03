@@ -2,7 +2,7 @@
  * Production and cloud saves are disabled in the current static guest version.
  * Server endpoints must validate payloads; TypeScript is not a security boundary.
  */
-export type PersonType = 'adultF' | 'adultM' | 'child' | 'baby';
+export type PersonType = 'adultF' | 'adultM' | 'adultN' | 'child' | 'baby';
 export type Fit = 'slim' | 'regular' | 'relaxed' | 'oversize';
 export type GarmentType = 'tshirt' | 'hoodie' | 'crewneck' | 'sweater' | 'shirt' | 'trousers' | 'dress' | 'bodysuit';
 export type MaterialType = 'cotton_jersey' | 'french_terry' | 'fleece' | 'merino' | 'poplin' | 'linen';
@@ -27,7 +27,7 @@ export interface TailorPerson {
 export interface FamilyTailorDraft {
  schema: 'fitmystyle-tailor-pack-v1';
  ownerId?: string; // only populated by server after verifying auth; never trust a client-supplied owner
- persons: TailorPerson[]; // 1–8
+ persons: TailorPerson[]; // 1–12
  createdAt: string;
  approval: 'draft' | 'awaiting-pattern-review' | 'reviewed';
  neverAutoDispatch: true;
