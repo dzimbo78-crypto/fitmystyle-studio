@@ -2,7 +2,7 @@ import {makeProject,makePerson,VERSION,TEMPLATES,PALETTES,allowedTemplates,toCm,
 import {safeColor,clamp,TEXTILE_PATTERNS} from './scene-model.mjs';
 import {TYPEFACES} from './photo-catalog.mjs';
 import {designText} from './photo-core.mjs';
-import {normalizeShopping} from './shopping-core.mjs?v=6.1';
+import {normalizeShopping} from './shopping-core.mjs?v=7';
 const text=(v,n=80)=>typeof v==='string'?v.slice(0,n):'';
 export function importProject(raw,{strictMeasurements=true}={}){
  if(!raw||typeof raw!=='object'||!Array.isArray(raw.members)||raw.members.length<1||raw.members.length>12)throw Error('Projekt musi zawierać od 1 do 12 osób.');

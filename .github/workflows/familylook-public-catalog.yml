@@ -1,0 +1,52 @@
+name: FamilyLook public storefronts
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/familylook-public-catalog.yml'
+      - 'familylook/tools/public-retail-html.mjs'
+      - 'familylook/tools/refresh-public-catalog.mjs'
+      - 'familylook/site/data/retail-europe.json'
+  schedule:
+    - cron: '23 3,15 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: familylook-public-storefront-refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    if: github.ref == 'refs/heads/main'
+    timeout-minutes: 18
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Read public HTML and preserve prior observations
+        shell: bash
+        run: |
+          set -euo pipefail
+          catalog_previous="$RUNNER_TEMP/familylook-prior.json"
+          if git ls-remote --exit-code origin refs/heads/familylook-catalog >/dev/null; then
+            git fetch --no-tags origin refs/heads/familylook-catalog:refs/remotes/origin/familylook-catalog
+            git show refs/remotes/origin/familylook-catalog:retail-refresh.json > "$catalog_previous"
+          fi
+          node familylook/tools/refresh-public-catalog.mjs "$RUNNER_TEMP/retail-refresh.json" "$catalog_previous"
+      - name: Publish confirmed observations
+        shell: bash
+        run: |
+          set -euo pipefail
+          catalog_output="$RUNNER_TEMP/retail-refresh.json"
+          test -s "$catalog_output" || exit 0
+          if git show-ref --verify --quiet refs/remotes/origin/familylook-catalog; then
+            git switch --detach refs/remotes/origin/familylook-catalog
+          else
+            git switch --orphan familylook-catalog
+          fi
+          cp "$catalog_output" retail-refresh.json
+          git add -- retail-refresh.json
+          git -c user.name='FamilyLook Catalog' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Refresh public product observations'
+          git push origin HEAD:refs/heads/familylook-catalog

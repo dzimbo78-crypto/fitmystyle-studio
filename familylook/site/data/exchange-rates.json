@@ -1,1 +1,1 @@
-{"source":"NBP","url":"https://api.nbp.pl/api/exchangerates/tables/a/?format=json","effectiveDate":"2026-11-03","base":"PLN","rates":{"PLN":1,"EUR":4.4233,"DKK":0.5919}}
+{"source":"NBP","url":"https://api.nbp.pl/api/exchangerates/tables/a/?format=json","effectiveDate":"2026-11-04","base":"PLN","rates":{"PLN":1,"EUR":4.4014,"DKK":0.5889,"SEK":0.4016,"NOK":0.4249,"GBP":5.2737,"CHF":4.7883,"CZK":0.181,"HUF":0.012115,"RON":0.8233}}
