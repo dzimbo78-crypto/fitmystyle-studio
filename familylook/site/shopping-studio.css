@@ -13,3 +13,9 @@
 @media(min-width:781px){.shop-plan{max-height:calc(100dvh - 116px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}}@media(max-width:780px){.shop-plan{max-height:none;overflow:visible}}
 
 .shopping-loading{font-size:14px;color:#657754;padding:28px 0}.startup-error[hidden]{display:none}.startup-error{position:fixed;top:90px;left:50%;transform:translateX(-50%);z-index:90;max-width:calc(100% - 30px);display:flex;gap:18px;align-items:center;background:#f7f4e8;border:1px solid #d0c5a6;border-radius:5px;padding:16px 20px;color:#695a39;font:13px Arial;box-shadow:0 8px 30px #0002}.startup-error button{border:1px solid #a39778;background:transparent;border-radius:3px;padding:8px 12px;font:inherit;color:inherit;cursor:pointer}
+
+.shop-market-bar{display:flex;align-items:center;flex-wrap:wrap;gap:10px 14px;margin:0 0 22px;padding:12px 16px;background:#efeee8;border:1px solid #dfded3;border-radius:8px}
+.shop-market-bar label{font-weight:600;font-size:.83rem}
+.shop-market-bar select{min-width:160px;max-width:100%;padding:8px 12px;border:1px solid #d8d8cd;border-radius:5px;background:#fcfbf7;color:inherit;font:inherit}
+.shop-market-bar small{margin-left:auto;color:#525c4e;font-size:.75rem}
+@media(max-width:550px){.shop-market-bar{padding:10px 12px}.shop-market-bar small{width:100%;margin-left:0}.shop-market-bar select{min-width:0;flex:1}}

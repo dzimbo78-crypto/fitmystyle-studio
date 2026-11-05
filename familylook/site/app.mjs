@@ -1,5 +1,5 @@
 import {studioToTailor,TAILOR_KEY} from './tailor-bridge.mjs';
-import {importProject,LOOK_PRESETS,applyLook,printFile,providerManifest} from './project-io.mjs?v=6.1';
+import {importProject,LOOK_PRESETS,applyLook,printFile,providerManifest} from './project-io.mjs?v=7';
 import {createPhotoStudio} from './photo-studio.mjs';
 import {PHOTO_TEMPLATES} from './photo-catalog.mjs';
 import {ProjectHistory} from './history.mjs';
@@ -33,7 +33,7 @@ function renderShopping(){
  if(shoppingStudio){shoppingStudio.update(project,selectedPerson);return;}
  if(shoppingLoad)return;
  $('shopping').innerHTML='<p class="shopping-loading" role="status">Wczytywanie katalogu sklepów…</p>';
- shoppingLoad=import('./shopping-studio.mjs?v=6.1').then(({createShoppingStudio})=>{shoppingStudio=createShoppingStudio($('shopping'),{onChange:()=>persist(),onSelect:id=>{selectedPerson=id;renderMeasurements();}});shoppingStudio.update(project,selectedPerson);}).catch(()=>{$('shopping').innerHTML='<p class="shopping-loading" role="alert">Nie udało się wczytać zakupów. <button id="reload-shopping" class="shop-refresh">Odśwież stronę</button></p>';$('reload-shopping').onclick=()=>location.reload();});
+ shoppingLoad=import('./shopping-studio.mjs?v=7').then(({createShoppingStudio})=>{shoppingStudio=createShoppingStudio($('shopping'),{onChange:()=>persist(),onSelect:id=>{selectedPerson=id;renderMeasurements();}});shoppingStudio.update(project,selectedPerson);}).catch(()=>{$('shopping').innerHTML='<p class="shopping-loading" role="alert">Nie udało się wczytać zakupów. <button id="reload-shopping" class="shop-refresh">Odśwież stronę</button></p>';$('reload-shopping').onclick=()=>location.reload();});
 }
 function renderAll(){renderMembers();renderPalettes();renderPreview();renderMeasurements();renderReadiness();renderTemplates();renderShopping();}
 function download(content,filename,type='application/octet-stream'){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000)}
